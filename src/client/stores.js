@@ -1,6 +1,4 @@
-import HomeStore from './components/Home/HomeStore'
-
-const home = new HomeStore();
+import home from './components/Home/HomeStore'
 
 export default {
     home
