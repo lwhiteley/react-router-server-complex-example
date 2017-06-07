@@ -1,3 +1,2 @@
-import Images from './Images';
-
-export default Images
+import Component from './Images';
+export default Component
