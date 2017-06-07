@@ -16,7 +16,7 @@ class Home extends Component {
 
         <div className="counter-cntr">
           <div className="counter">
-            Counter: {home.counter}
+            {home.counterDisplay}
           </div>
 
           <div className="clearfix">

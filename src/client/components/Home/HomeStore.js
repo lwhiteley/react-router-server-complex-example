@@ -1,9 +1,12 @@
 
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 
 class HomeStore {
-  @observable counter = 0;
   message = 'I am ready to be displayed';
+  @observable counter = 0;
+  @computed get counterDisplay() {
+    return `Counter: ${this.counter}`;
+  }
 
   @action incrementCounter() {
     this.counter++;
