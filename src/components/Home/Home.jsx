@@ -1,32 +1,47 @@
 import React, { Component } from 'react';
 import  PropTypes from 'prop-types';
-import { fetchState } from 'react-router-server';
-import '../styles/home.css';
+import { observer, inject } from 'mobx-react';
+import './home.css';
 
-@fetchState(
-  state => ({
-    isLoaded: state.message,
-    message: state.message
-  }),
-  actions => ({ done: actions.done })
-)
+@inject("home") @observer
 class Home extends Component {
-  componentWillMount() {
-    if (!this.props.isLoaded) {
-      // Async data loading
-      setTimeout(() => {
-        this.props.done({ message: 'I am ready to be displayed' });
-      }, 50);
-    }
-  }
 
   render() {
-    const { message } = this.props;
+    const { home } = this.props;
     return (
       <div className="home">
         <div className="home-message">
-          {message}
+          {home.message}
         </div>
+
+        <div className="counter-cntr">
+          <div className="counter">
+            Counter: {home.counter}
+          </div>
+
+          <div className="clearfix">
+            <div className="pointer increment-btn" onClick={() => {
+                const { home } = this.props;
+                home.incrementCounter();
+              }}>
+              Increment
+            </div>
+            <div className="pointer increment-btn" onClick={() => {
+                const { home } = this.props;
+                home.decrementCounter();
+              }}>
+              Decrement
+            </div>
+            <div className="pointer increment-btn" onClick={() => {
+                const { home } = this.props;
+                home.resetCounter();
+              }}>
+              Reset
+            </div>
+          </div>
+        </div>
+
+        
 
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum imperdiet elit eget diam placerat, ac

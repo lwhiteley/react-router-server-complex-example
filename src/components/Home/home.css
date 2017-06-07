@@ -1,0 +1,36 @@
+.home-message {
+    width: 100%;
+    background: greenyellow;
+    text-align: center;
+    color: darkgreen;
+    padding: 4px 0;
+}
+
+.counter {
+    font-size: 25px;
+}
+
+.pointer.increment-btn {
+    cursor: pointer;
+    padding: 10px 20px;
+    background: #c0c0c0;
+    float: left;
+    width: 100px;
+    margin-right:50px;
+}
+
+.counter-cntr {
+    padding-top:30px;
+}
+
+.clearfix:before {
+    display: block;
+    content: " ";
+    clear: both;
+}
+
+.clearfix:after {
+    display: block;
+    content: " ";
+    clear: both;
+}

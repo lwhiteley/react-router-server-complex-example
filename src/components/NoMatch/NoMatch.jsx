@@ -1,5 +1,5 @@
 import * as React from 'react';
-import '../styles/no-match.css';
+import './no-match.css';
 
 const NoMatch = (props) => (
   <div className="no-match">

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Router from './Router';
 import { Link } from 'react-router-dom';
-import '../styles/app.css';
+import './app.css';
+import DevTools from 'mobx-react-devtools';
 
 class App extends Component {
   render() {
@@ -19,6 +20,7 @@ class App extends Component {
         <div className="content">
           <Router />
         </div>
+        <DevTools />
       </div>
     )
   }
