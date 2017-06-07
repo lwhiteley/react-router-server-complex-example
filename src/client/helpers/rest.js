@@ -106,7 +106,6 @@ class Rest {
             status,
             query,
         };
-        console.log(res)
         return res;
     }
 
