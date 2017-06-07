@@ -1,11 +1,12 @@
 require('es6-promise').polyfill();
 import fetch from 'isomorphic-fetch';
 import qs from 'qs';
+import config from '../../config/client';
 
 class Rest {
 
     constructor({path, headers, baseUrl, query}){
-        this.baseUrl = '/api/v1' || baseUrl;
+        this.baseUrl = config.apiBasePath || baseUrl;
         this.path = path;
         this.defaultHeaders = headers;
         this.defaultQuery = query;
@@ -77,7 +78,7 @@ class Rest {
         const queryString = queryStringParsed ? `?${queryStringParsed}` : '';
         const reqOptions = {
             method: options.method || 'GET',
-            headers: Object.assign({}, this.defaultHeaders, options.headers),
+            headers: Object.assign({}, this.defaultHeaders || {}, options.headers || {}),
             body: options.body
         };
 
