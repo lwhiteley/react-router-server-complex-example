@@ -10,14 +10,14 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import methodOverride from 'method-override';
 import api from './api';
-import config from './config';
+import config from './config/server';
 import morgan from 'morgan';
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.dbConnectionString);
 
 const app = express();
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
+app.use(morgan(config.logger))
 app.use(compression());
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));

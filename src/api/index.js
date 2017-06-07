@@ -1,7 +1,7 @@
 import express from 'express';
 import restify from 'express-restify-mongoose';
 import models from './models';
-import config from '../config';
+import config from '../config/server';
 
 const router = express.Router();
 
