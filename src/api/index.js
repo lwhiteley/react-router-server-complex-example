@@ -5,7 +5,7 @@ import config from '../config/server';
 
 const router = express.Router();
 
-const restConfig = config.rest ? typeof config.rest === 'object' : {};
+const restConfig = typeof config.rest === 'object' ? config.rest : {};
 delete restConfig.name;
 
 Object.values(models).forEach((data) => {
