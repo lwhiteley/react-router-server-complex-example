@@ -3,9 +3,7 @@ import { Module } from 'react-router-server';
 import { Switch, Route, Redirect } from 'react-router';
 import NoMatch from '../NoMatch';
 
-class App extends Component {
-  render() {
-    return (
+const Router = () =>  (
         <Switch>
             <Route
                 exact
@@ -41,8 +39,6 @@ class App extends Component {
             />
             <Route component={NoMatch}/>
         </Switch>
-    )
-  }
-}
-
-export default App;
+    );
+        
+export default Router;     
