@@ -11,17 +11,28 @@ import bodyParser from 'body-parser';
 import methodOverride from 'method-override';
 import api from './api';
 import config from './config';
+import morgan from 'morgan';
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.dbConnectionString);
 
 const app = express();
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
 app.use(compression());
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(methodOverride())
 app.use(express.static(path.join(__dirname, '..', 'build', 'public')));
 app.use(api);
+
+const restConfig = config.rest || {prefix: 'api'};
+
+app.use(`/${restConfig.prefix}`, (req, res) => {
+  res.status(404).send({
+    "name": "Error",
+    "message": "Not Found"
+  });
+});
 
 app.get('/*', function (req, res) {
   if (req.url) {
