@@ -16,7 +16,8 @@ React Router v4 Server-Side Rendering Example
 ### Rest Configuration
 
 It is possible to globally configure the rest components using the general [config file](src/config.js).
-Please the the [options reference](https://florianholzapfel.github.io/express-restify-mongoose/#reference) for [express-restify-mongoose](https://florianholzapfel.github.io/express-restify-mongoose)
+
+Please see the [options reference](https://florianholzapfel.github.io/express-restify-mongoose/#reference) for [express-restify-mongoose](https://florianholzapfel.github.io/express-restify-mongoose)
 
 eg. 
 
@@ -29,4 +30,6 @@ const config = {
 }
 ```
 
-*Per Model* configuration is done by convention in each model file. An example can be seen in the [Customer](src/api/models/customer.js) model file
+*Per Model* configuration is done by convention in each model file. An example can be seen in the [Customer](src/api/models/customer.js) model file. 
+
+**Please note** that model specific configurations will override the globally defined `rest` config. 
