@@ -5,8 +5,14 @@ import { StaticRouter } from 'react-router';
 import express from 'express';
 import path from 'path';
 import stats from '../build/public/stats.json';
+import bodyParser from 'body-parser';
+import compression from 'compression';
 
 const app = express();
+
+app.use(compression());
+app.use(bodyParser.json({ limit: '20mb' }));
+app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(express.static(path.join(__dirname, '..', 'build', 'public')));
 
 app.get('/*', function (req, res) {
