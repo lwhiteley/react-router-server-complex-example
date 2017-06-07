@@ -23,12 +23,7 @@
     padding-top:30px;
 }
 
-.clearfix:before {
-    display: block;
-    content: " ";
-    clear: both;
-}
-
+.clearfix:before,
 .clearfix:after {
     display: block;
     content: " ";
