@@ -82,9 +82,9 @@ class Rest {
             body: options.body
         };
 
-        if ((reqOptions.method != 'GET' || 
-            reqOptions.method != 'HEAD' || 
-            reqOptions.method != 'DELETE') && 
+        if ((reqOptions.method !== 'GET' || 
+            reqOptions.method !== 'HEAD' || 
+            reqOptions.method !== 'DELETE') && 
             typeof reqOptions.body === 'object') {
                 reqOptions.body = JSON.stringify(reqOptions.body)
         }
