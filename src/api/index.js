@@ -4,7 +4,7 @@ import models from './models';
 import config from '../config/server';
 
 const router = express.Router();
-const crouter = express.Router();
+const customRoutes = express.Router();
 
 const restConfig = typeof config.rest === 'object' ? config.rest : {};
 delete restConfig.name;
@@ -16,7 +16,7 @@ Object.values(models).forEach((data) => {
         data.controllers.forEach((controller) => {
             if (typeof controller.action === 'function'){
                 const apiMethod = typeof controller.method === 'string' ? controller.method : 'get';
-                crouter[apiMethod.toLowerCase()](`${modelPath}/${controller.path || ''}`, controller.action);
+                customRoutes[apiMethod.toLowerCase()](`${modelPath}/${controller.path || ''}`, controller.action);
             }
         });
     }
