@@ -12,12 +12,24 @@ import methodOverride from 'method-override';
 import api from './api';
 import config from './config/server';
 import morgan from 'morgan';
+import cuid from 'cuid';
+import logger from './logger';
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.dbConnectionString);
 
 const app = express();
-app.use(morgan(config.logger))
+
+morgan.token('id', (req) => {
+  return req.id
+})
+
+app.use((req, res, next) => {
+  req.id = cuid();
+  next();
+})
+
+app.use(morgan(config.logger.format, config.logger.options))
 app.use(compression());
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));

@@ -1,3 +1,9 @@
 node_modules
 build
 npm-debug.log*
+*.log
+*.pid
+logs
+.DS_Store
+.vscode
+.idea

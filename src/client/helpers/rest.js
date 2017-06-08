@@ -50,6 +50,13 @@ class Rest {
         return this.request(url, options);
     }
 
+    async deleteOne(id, options = {}){
+        const selectedPath = options.path || this.path;
+        options.method = 'DELETE';
+        const url = `${selectedPath}/${id}`;
+        return this.request(url, options);
+    }
+
     async put(id, options = {}){
         const selectedPath = options.path || this.path;
         options.method = 'PUT';
@@ -64,13 +71,6 @@ class Rest {
         return this.request(url, options);
     }
 
-    async deleteOne(id, options = {}){
-        const selectedPath = options.path || this.path;
-        options.method = 'DELETE';
-        const url = `${selectedPath}/${id}`;
-        return this.request(url, options);
-    }
-
     async request(path, options = {}){
         const baseUrl = options.baseUrl || this.baseUrl;
         const query = Object.assign({}, this.defaultQuery, options.query)
@@ -79,7 +79,7 @@ class Rest {
         const reqOptions = {
             method: options.method || 'GET',
             headers: Object.assign({}, this.defaultHeaders || {}, options.headers || {}),
-            body: options.body
+            body: options.body,
         };
 
         if ((reqOptions.method !== 'GET' || 
@@ -87,6 +87,8 @@ class Rest {
             reqOptions.method !== 'DELETE') && 
             typeof reqOptions.body === 'object') {
                 reqOptions.body = JSON.stringify(reqOptions.body)
+        } else {
+            reqOptions.body = null;
         }
 
         const url = `${baseUrl}/${path}${queryString}`;
@@ -101,7 +103,6 @@ class Rest {
         
         const status = response.status;
         const res = {
-            path: url,
             body,
             response,
             status,
