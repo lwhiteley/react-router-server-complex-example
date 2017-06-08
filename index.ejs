@@ -1,12 +1,12 @@
 <html>
 <head>
   <title></title>
+  <link rel="stylesheet" type="text/css" href="/app.css">
   <% if (typeof files !== 'undefined') { %>
   <% files.forEach(function (file) { %>
   <link rel="preload" href="/<%- file %>" as="script">
   <% }); %>
   <% } %>
-  <link rel="stylesheet" type="text/css" href="/app.css">
 </head>
 <body>
 <div id="main"><% if (typeof html !== 'undefined') { %><%- html %><% } %></div>

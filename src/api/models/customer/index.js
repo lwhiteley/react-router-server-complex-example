@@ -1,4 +1,5 @@
 import mongoose, {Schema} from 'mongoose';
+import controllers from './controllers';
 
 const schema =  new mongoose.Schema({
   name: { type: String, required: true },
@@ -15,5 +16,6 @@ const config = {};
 
 export default {
     model,
-    config
+    config,
+    controllers
 };

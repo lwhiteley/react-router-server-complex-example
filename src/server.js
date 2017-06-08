@@ -55,7 +55,8 @@ app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
 app.use(methodOverride());
 app.use(express.static(path.join(__dirname, '..', 'build', 'public')));
-app.use(api);
+app.use(api.customRoutes);
+app.use(api.router);
 
 const restConfig = config.rest || { prefix: 'api' };
 
