@@ -37,7 +37,7 @@ app.use(methodOverride())
 app.use(express.static(path.join(__dirname, '..', 'build', 'public')));
 app.use(api);
 
-const restConfig = config.rest || {prefix: 'api'};
+const restConfig = config.rest || { prefix: 'api' };
 
 app.use(`/${restConfig.prefix}`, (req, res) => {
   res.status(404).send({
