@@ -1,4 +1,4 @@
-var winston = require('winston');
+import winston from 'winston';
 winston.emitErrs = true;
 
 var logger = new winston.Logger({
@@ -22,9 +22,10 @@ var logger = new winston.Logger({
     exitOnError: false,
 });
 
-module.exports = logger;
-module.exports.stream = {
+logger.stream = {
     write: function(message, encoding){
         logger.info(message.slice(0, -1));
     }
 };
+
+export default logger;

@@ -1,4 +1,4 @@
-const logger = require('../logger');
+import logger from '../logger';
 
 const config = {
     dbConnectionString: process.env.DATABASE_URL || 'mongodb://localhost:27017/rrs-db',
