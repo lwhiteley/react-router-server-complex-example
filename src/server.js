@@ -14,6 +14,7 @@ import config from './config/server';
 import morgan from 'morgan';
 import cuid from 'cuid';
 import logger from './logger';
+import requestIp from 'request-ip';
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.dbConnectionString);
@@ -21,19 +22,29 @@ mongoose.connect(config.dbConnectionString);
 const app = express();
 
 morgan.token('id', (req) => {
-  return req.id
-})
+  return req.id;
+});
 
 app.use((req, res, next) => {
   req.id = cuid();
   next();
-})
+});
 
-app.use(morgan(config.logger.format, config.logger.options))
+app.use(requestIp.mw());
+
+app.use(function(req, res, next) {
+    req.logContext = {
+      clientIp: req.clientIp,
+      reqId: req.id,
+    };
+    next();
+});
+
+app.use(morgan(config.logger.format, config.logger.options));
 app.use(compression());
 app.use(bodyParser.json({ limit: '20mb' }));
 app.use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
-app.use(methodOverride())
+app.use(methodOverride());
 app.use(express.static(path.join(__dirname, '..', 'build', 'public')));
 app.use(api);
 
@@ -41,14 +52,14 @@ const restConfig = config.rest || { prefix: 'api' };
 
 app.use(`/${restConfig.prefix}`, (req, res) => {
   res.status(404).send({
-    "name": "Error",
-    "message": "Not Found"
+    name: 'Error',
+    message: 'Not Found',
   });
 });
 
 app.get('/*', function (req, res) {
   if (req.url) {
-    const context = {}
+    const context = {};
     const server = (
       <StaticRouter
         location={req.url}
@@ -62,9 +73,9 @@ app.get('/*', function (req, res) {
       .then(({ html, state, modules }) => {
         if (context.url) {
           res.writeHead(302, {
-            Location: context.url
+            Location: context.url,
           })
-          res.end()
+          res.end();
         } else {
           const extracted = extractModules(modules, stats);
           res.render(
@@ -73,7 +84,7 @@ app.get('/*', function (req, res) {
               html,
               state,
               files: [].concat.apply([], extracted.map(module => module.files)),
-              modules: extracted
+              modules: extracted,
             }
           );
         }
@@ -82,6 +93,6 @@ app.get('/*', function (req, res) {
   }
 });
 
-app.listen(3000, function () {
+app.listen(config.port, function () {
   console.log('site listening on http://localhost:3000');
 });
