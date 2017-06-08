@@ -2,24 +2,33 @@ import React from 'react';
 import App from '../build/server/app';
 import { renderToString, extractModules } from 'react-router-server';
 import { StaticRouter } from 'react-router';
+
 import express from 'express';
-import path from 'path';
-import stats from '../build/public/stats.json';
 import compression from 'compression';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import methodOverride from 'method-override';
-import api from './api';
-import config from './config/server';
+import requestIp from 'request-ip';
 import morgan from 'morgan';
 import cuid from 'cuid';
+import path from 'path';
+
 import logger from './logger';
-import requestIp from 'request-ip';
+import api from './api';
+import config from './config/server';
+import stats from '../build/public/stats.json';
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.dbConnectionString);
 
 const app = express();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
+app.use(function(req, res, next){
+  res.io = io;
+  next();
+});
 
 morgan.token('id', (req) => {
   return req.id;
@@ -96,3 +105,8 @@ app.get('/*', function (req, res) {
 app.listen(config.port, function () {
   console.log('site listening on http://localhost:3000');
 });
+
+export default {
+  app,
+  server,
+}
