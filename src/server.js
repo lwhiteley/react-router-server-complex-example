@@ -96,4 +96,4 @@ app.listen(config.port, function () {
   app.info(`site listening on http://localhost:${config.port}`);
 });
 
-export default app
+export default app;
