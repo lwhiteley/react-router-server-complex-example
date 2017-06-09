@@ -87,7 +87,7 @@ app.get('/*', function (req, res) {
           );
         }
       })
-      .catch(err => console.error(err));
+      .catch(err => req.app.error(err));
   }
 });
 
