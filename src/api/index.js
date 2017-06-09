@@ -1,7 +1,5 @@
 import models from './models';
-import config from '../config/server';
 import service from 'feathers-mongoose';
-
 import plural from 'plural';
 
 export default (app) => {

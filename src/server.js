@@ -17,12 +17,11 @@ import config from './config/server';
 import stats from '../build/public/stats.json';
 import serveStatic from 'serve-static';
 
-const feathers = require('feathers');
-const rest = require('feathers-rest');
-const socketio = require('feathers-socketio');
-
-const logger = require('feathers-logger');
-const handler = require('feathers-errors/handler');
+import feathers from 'feathers';
+import rest from 'feathers-rest';
+import socketio from 'feathers-socketio';
+import logger from 'feathers-logger';
+import handler from 'feathers-errors/handler';
 
 mongoose.Promise = global.Promise;
 mongoose.connect(config.dbConnectionString);
@@ -55,14 +54,6 @@ app.configure(socketio())
 
 // Configure api with mongoose models
 api(app)
-
-// const restConfig = config.rest || { prefix: 'api' };
-// app.use(`/${restConfig.prefix}`, (req, res) => {
-//   res.status(404).send({
-//     name: 'Error',
-//     message: 'Not Found',
-//   });
-// });
 
 app.get('/*', function (req, res) {
   if (req.url) {
@@ -102,7 +93,7 @@ app.get('/*', function (req, res) {
 
 app.use(handler());
 app.listen(config.port, function () {
-  app.info('site listening on http://localhost:3000');
+  app.info(`site listening on http://localhost:${config.port}`);
 });
 
 export default app
