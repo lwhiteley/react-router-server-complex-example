@@ -1,116 +1,13 @@
-require('es6-promise').polyfill();
-import fetch from 'isomorphic-fetch';
-import qs from 'qs';
 import config from '../../config/client';
 
-class Rest {
+const feathers = require('feathers/client');
+const socketio = require('feathers-socketio/client');
+const io = require('socket.io-client');
 
-    constructor({path, headers, baseUrl, query}){
-        this.baseUrl = config.apiBasePath || baseUrl;
-        this.path = path;
-        this.defaultHeaders = headers;
-        this.defaultQuery = query;
-    }
+const socket = io('http://localhost:3000');
+const app = feathers();
 
-    async get(options = {}){
-        const selectedPath = options.path || this.path;
-        const url = `${selectedPath}`;
-        return this.request(url, options);
-    }
+// Set up Socket.io client with the socket
+app.configure(socketio(socket));
 
-    async getOne(id, options = {}){
-        const selectedPath = options.path || this.path;
-        const url = `${selectedPath}/${id}`;
-        return this.request(url, options);
-    }
-
-    async getShallow(id, options = {}){
-        const selectedPath = options.path || this.path;
-        const url = `${selectedPath}/${id}/shallow`;
-        return this.request(url, options);
-    }
-
-    async count(options = {}){
-        const selectedPath = options.path || this.path;
-        const url = `${selectedPath}/count`;
-        return this.request(url, options);
-    }
-
-    async post(options = {}){
-        const selectedPath = options.path || this.path;
-        options.method = 'POST';
-        const url = `${selectedPath}`;
-        return this.request(url, options);
-    }
-
-    async delete(options = {}){
-        const selectedPath = options.path || this.path;
-        options.method = 'DELETE';
-        const url = `${selectedPath}`;
-        return this.request(url, options);
-    }
-
-    async deleteOne(id, options = {}){
-        const selectedPath = options.path || this.path;
-        options.method = 'DELETE';
-        const url = `${selectedPath}/${id}`;
-        return this.request(url, options);
-    }
-
-    async put(id, options = {}){
-        const selectedPath = options.path || this.path;
-        options.method = 'PUT';
-        const url = `${selectedPath}/${id}`;
-        return this.request(url, options);
-    }
-
-    async patch(id, options = {}){
-        const selectedPath = options.path || this.path;
-        options.method = 'PATCH';
-        const url = `${selectedPath}/${id}`;
-        return this.request(url, options);
-    }
-
-    async request(path, options = {}){
-        const baseUrl = options.baseUrl || this.baseUrl;
-        const query = Object.assign({}, this.defaultQuery, options.query)
-        const queryStringParsed = qs.stringify(query);
-        const queryString = queryStringParsed ? `?${queryStringParsed}` : '';
-        const reqOptions = {
-            method: options.method || 'GET',
-            headers: Object.assign({}, this.defaultHeaders || {}, options.headers || {}),
-            body: options.body,
-        };
-
-        if ((reqOptions.method !== 'GET' || 
-            reqOptions.method !== 'HEAD' || 
-            reqOptions.method !== 'DELETE') && 
-            typeof reqOptions.body === 'object') {
-                reqOptions.body = JSON.stringify(reqOptions.body)
-        } else {
-            reqOptions.body = null;
-        }
-
-        const url = `${baseUrl}/${path}${queryString}`;
-        let body;
-        const response = await fetch(url, reqOptions);
-
-        try {
-            body = await response.json();
-        } catch (e) {
-            body = e;
-        }
-        
-        const status = response.status;
-        const res = {
-            body,
-            response,
-            status,
-            query,
-        };
-        return res;
-    }
-
-}
-
-export default Rest
+export default app

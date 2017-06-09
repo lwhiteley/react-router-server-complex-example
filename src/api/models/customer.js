@@ -7,4 +7,11 @@ const schema =  new mongoose.Schema({
 
 const model = mongoose.model('Customer', schema);
 
-export default model;
+export default {
+  apiPath: 'customers',
+  Model: model,
+  paginate: {
+    default: 2,
+    max: 4
+  }
+};
