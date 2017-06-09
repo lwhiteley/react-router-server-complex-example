@@ -1,4 +1,4 @@
-
+import Rest from '../../helpers/rest';
 import { observable, action, computed } from 'mobx';
 
 class HomeStore {
@@ -8,7 +8,7 @@ class HomeStore {
     return `Counter: ${this.counter}`;
   }
 
-  @action incrementCounter() {
+  @action async incrementCounter() {
     this.counter++;
   }
 
