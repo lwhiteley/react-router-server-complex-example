@@ -1,20 +1,24 @@
 <html>
-<head>
-  <title></title>
-  <link rel="stylesheet" type="text/css" href="/app.css">
-  <% if (typeof files !== 'undefined') { %>
-  <% files.forEach(function (file) { %>
-  <link rel="preload" href="/<%- file %>" as="script">
-  <% }); %>
-  <% } %>
-</head>
-<body>
-<div id="main"><% if (typeof html !== 'undefined') { %><%- html %><% } %></div>
-<script>
-  window.__INITIAL_STATE__ = <% if (typeof state !== 'undefined' && state) { %><%- JSON.stringify(state) %><% } else { %>null<% } %>;
-  window.__INITIAL_MODULES__ = <% if (typeof modules !== 'undefined' && modules) { %><%- JSON.stringify(modules) %><% } else { %>null<% } %>;
-</script>
-<script src="/app.js"></script>
-</body>
+  <head>
+    <% head.base.toString() %>
+    <% head.title.toString() %>
+    <% head.meta.toString() %>
+    <% head.link.toString() %>
+    <% head.script.toString() %>
+    <link rel="stylesheet" type="text/css" href="/app.css">
+    <% if (typeof files !== 'undefined') { %>
+    <% files.forEach(function (file) { %>
+    <link rel="preload" href="/<%- file %>" as="script">
+    <% }); %>
+    <% } %>
+  </head>
+  <body>
+    <div id="main"><% if (typeof html !== 'undefined') { %><%- html %><% } %></div>
+    <script>
+      window.__INITIAL_STATE__ = <% if (typeof state !== 'undefined' && state) { %><%- JSON.stringify(state) %><% } else { %>null<% } %>;
+      window.__INITIAL_MODULES__ = <% if (typeof modules !== 'undefined' && modules) { %><%- JSON.stringify(modules) %><% } else { %>null<% } %>;
+    </script>
+    <script src="/app.js"></script>
+  </body>
 </html>
 

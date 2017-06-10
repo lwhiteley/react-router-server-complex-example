@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import  PropTypes from 'prop-types';
 import { observer, inject } from 'mobx-react';
+import Helmet from 'react-helmet';
 import './home.css';
 
 @inject("home") @observer
@@ -10,6 +11,7 @@ class Home extends Component {
     const { home } = this.props;
     return (
       <div className="home">
+        <Helmet title={"Home"} />
         <div className="home-message">
           {home.message}
         </div>

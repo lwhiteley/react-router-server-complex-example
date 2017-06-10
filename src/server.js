@@ -1,6 +1,7 @@
 import React from 'react';
 import { renderToString, extractModules } from 'react-router-server';
 import { StaticRouter } from 'react-router';
+import Helmet from 'react-helmet';
 
 import compression from 'compression';
 import mongoose from 'mongoose';
@@ -88,6 +89,7 @@ app.get('/*', (req, res) => {
 
     renderToString(server)
       .then(({ html, state, modules }) => {
+        const head = Helmet.rewind();
         if (context.url) {
           res.writeHead(302, {
             Location: context.url,
@@ -97,6 +99,7 @@ app.get('/*', (req, res) => {
           const extracted = extractModules(modules, stats);
           res.render(path.join(__dirname, '..', 'index.ejs'), {
             html,
+            head,
             state,
             files: extracted.map(module => module.files),
             modules: extracted,
