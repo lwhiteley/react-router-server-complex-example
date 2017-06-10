@@ -6,7 +6,7 @@ const io = require('socket.io-client');
 // const rest = require('feathers-rest/client');
 // const axios = require('axios');
 
-const socket = io('http://localhost:3000');
+const socket = io('/');
 const app = feathers();
 // const restClient = rest(config.apiBasePath);
 

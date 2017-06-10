@@ -1,11 +1,10 @@
-import logger from '../logger';
-import common from './common';
+import logger from '../src/logger';
 
 const config = {
   port: process.env.PORT || 3000,
   dbConnectionString: process.env.DATABASE_URL ||
     'mongodb://localhost:27017/rrs-db',
-  logger: {
+  morgan: {
     format: 'tiny',
     options: {
       stream: logger.stream,
@@ -13,4 +12,4 @@ const config = {
   },
 };
 
-export default Object.assign({}, common, config);
+module.exports = config;

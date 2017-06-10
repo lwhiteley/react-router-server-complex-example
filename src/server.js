@@ -19,19 +19,20 @@ import socketio from 'feathers-socketio';
 import logger from 'feathers-logger';
 // import errors from 'feathers-errors';
 import handler from 'feathers-errors/handler';
+import configuration from 'feathers-configuration';
 
 import App from '../build/server/app';
 import winston from './logger';
 import api from './api';
-import config from './config/server';
 import stats from '../build/public/stats.json';
 
 mongoose.Promise = global.Promise;
-mongoose.connect(config.dbConnectionString);
 
 const app = feathers()
+  .configure(configuration(__dirname))
   .configure(logger(winston));
 
+mongoose.connect(app.get('dbConnectionString'));
 app.use(requestIp.mw());
 app.use((req, res, next) => {
   req.id = cuid();
@@ -43,7 +44,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(morgan(config.logger.format, config.logger.options));
+app.use(morgan(app.get('morgan').format, app.get('morgan').options));
 
   // Enable Socket.io
 app.configure(socketio())
@@ -101,8 +102,9 @@ app.get('/*', (req, res) => {
 });
 
 app.use(handler());
-app.listen(config.port, () => {
-  app.info(`site listening on http://localhost:${config.port}`);
+const port = app.get('port');
+app.listen(port, () => {
+  app.info(`site listening on http://localhost:${port}`);
 });
 
 export default app;
