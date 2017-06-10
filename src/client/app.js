@@ -1,15 +1,12 @@
-
-import React, { Component } from 'react';
-import App from './components/App';
+import React from 'react';
 import { Provider } from 'mobx-react';
-import stores from './stores'
+import App from './components/App';
+import stores from './stores';
 
-export default class AppContainer extends Component {
-    render() {
-        return (
-            <Provider {...stores} >
-                <App />
-            </Provider>
-        )
-    }
-} ;
+export default () => {
+  return (
+    <Provider {...stores}>
+      <App />
+    </Provider>
+  );
+};

@@ -1,2 +1,3 @@
 import Component from './Images';
-export default Component
+
+export default Component;

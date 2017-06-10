@@ -9,7 +9,7 @@ preload(__INITIAL_MODULES__)
     render((
       <ServerStateProvider state={__INITIAL_STATE__}>
         <BrowserRouter>
-          <App/>
+          <App />
         </BrowserRouter>
       </ServerStateProvider>
     ), document.getElementById('main'));

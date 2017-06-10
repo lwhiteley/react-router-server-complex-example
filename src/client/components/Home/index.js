@@ -1,2 +1,3 @@
 import Component from './Home';
-export default Component
+
+export default Component;

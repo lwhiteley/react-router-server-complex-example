@@ -1,2 +1,3 @@
 import Component from './App';
-export default Component
+
+export default Component;

@@ -1,5 +1,5 @@
-import Customer from './customer';
+const indexjs = require('indexjs');
 
-export default {
-    Customer,
-};
+export default indexjs(__dirname, {}, (model) => {
+  return model.default;
+});

@@ -1,8 +1,8 @@
-import mongoose, {Schema} from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
-const schema =  new mongoose.Schema({
+const schema = new Schema({
   name: { type: String, required: true },
-  comment: { type: String }
+  comment: { type: String },
 });
 
 const model = mongoose.model('Customer', schema);
@@ -10,8 +10,4 @@ const model = mongoose.model('Customer', schema);
 export default {
   apiPath: 'customers',
   Model: model,
-  paginate: {
-    default: 2,
-    max: 4
-  }
 };

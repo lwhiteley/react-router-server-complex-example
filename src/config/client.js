@@ -1,5 +1,5 @@
-const config = { 
-    apiBasePath: '/api/v1'
-};
+import common from './common';
 
-export default config;
+const config = {};
+
+export default Object.assign({}, common, config);

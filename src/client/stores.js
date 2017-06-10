@@ -1,4 +1,4 @@
-import home from './components/Home/HomeStore'
+import home from './components/Home/HomeStore';
 
 /**
  * stores exported here will be accessible in
@@ -7,5 +7,5 @@ import home from './components/Home/HomeStore'
  * for eg. @inject('home')
  */
 export default {
-    home
+  home,
 };
