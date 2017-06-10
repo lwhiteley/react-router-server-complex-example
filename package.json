@@ -5,9 +5,11 @@
     "build": "babel-node -- node_modules/.bin/webpack",
     "prestart": "npm run build",
     "start": "babel-node --plugins system-import-transformer -- src/server.js",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "precommit-msg": "echo 'Pre-commit checks...' && exit 0"
   },
   "pre-commit": [
+    "precommit-msg",
     "lint"
   ],
   "dependencies": {
