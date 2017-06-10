@@ -33,6 +33,10 @@ const app = feathers()
   .configure(logger(winston));
 
 mongoose.connect(app.get('dbConnectionString'));
+
+const morganSettings = app.get('morgan');
+const port = app.get('port');
+
 app.use(requestIp.mw());
 app.use((req, res, next) => {
   req.id = cuid();
@@ -44,7 +48,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(morgan(app.get('morgan').format, app.get('morgan').options));
+app.use(morgan(morganSettings.format, morganSettings.options));
 
   // Enable Socket.io
 app.configure(socketio())
@@ -102,7 +106,7 @@ app.get('/*', (req, res) => {
 });
 
 app.use(handler());
-const port = app.get('port');
+
 app.listen(port, () => {
   app.info(`site listening on http://localhost:${port}`);
 });
