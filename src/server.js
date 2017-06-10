@@ -41,17 +41,20 @@ app.use(requestIp.mw());
 app.use((req, res, next) => {
   req.id = cuid();
   req.app = app;
-  req.logContext = {
-    clientIp: req.clientIp,
-    reqId: req.id,
+  req.appContext = {
+    logContext: {
+      clientIp: req.clientIp,
+      reqId: req.id,
+    },
   };
   next();
 });
 
 app.use(morgan(morganSettings.format, morganSettings.options));
 
-  // Enable Socket.io
-app.configure(socketio())
+// Enable Socket.io
+app
+  .configure(socketio())
   .use(compression())
   .use(methodOverride())
   .use(bodyParser.json({ limit: '20mb' }))
@@ -73,10 +76,7 @@ app.get('/*', (req, res) => {
   if (req.url) {
     const context = {};
     const server = (
-      <StaticRouter
-        location={req.url}
-        context={context}
-      >
+      <StaticRouter location={req.url} context={context}>
         <App />
       </StaticRouter>
     );
@@ -90,15 +90,12 @@ app.get('/*', (req, res) => {
           res.end();
         } else {
           const extracted = extractModules(modules, stats);
-          res.render(
-            path.join(__dirname, '..', 'index.ejs'),
-            {
-              html,
-              state,
-              files: extracted.map(module => module.files),
-              modules: extracted,
-            }
-          );
+          res.render(path.join(__dirname, '..', 'index.ejs'), {
+            html,
+            state,
+            files: extracted.map(module => module.files),
+            modules: extracted,
+          });
         }
       })
       .catch(err => req.app.error(err));
