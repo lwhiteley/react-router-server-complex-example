@@ -7,6 +7,9 @@
     "start": "babel-node --plugins system-import-transformer -- src/server.js",
     "lint": "eslint src"
   },
+  "pre-commit": [
+    "lint"
+  ],
   "dependencies": {
     "axios": "^0.16.2",
     "babel-polyfill": "^6.23.0",
@@ -64,6 +67,7 @@
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.11.1",
     "mobx-react-devtools": "^4.2.13",
+    "pre-commit": "^1.2.2",
     "stats-webpack-plugin": "^0.6.0",
     "style-loader": "^0.16.1",
     "webpack": "^2.4.1"
