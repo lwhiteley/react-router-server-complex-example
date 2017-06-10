@@ -101,7 +101,7 @@ app.get('/*', (req, res) => {
             html,
             head,
             state,
-            files: extracted.map(module => module.files),
+            files: [...extracted.map(module => module.files)],
             modules: extracted,
           });
         }
