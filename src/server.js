@@ -67,11 +67,9 @@ app
   .use(bodyParser.urlencoded({ limit: '20mb', extended: false }))
   // Enable REST services
   .configure(rest())
+  .configure(api())
   .configure(hooks())
   .use(serveStatic(path.join(__dirname, '..', 'build', 'public')));
-
-// Configure api with mongoose models
-api(app);
 
 // app.use(`${config.apiBasePath}`, (req, res) => {
 //   const notFound = new errors.NotFound('not found');
