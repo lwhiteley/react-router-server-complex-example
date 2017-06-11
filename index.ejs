@@ -16,8 +16,10 @@
     <div id="main"><% if (typeof html !== 'undefined') { %><%- html %><% } %></div>
     <script>
       window.__INITIAL_STATE__ = <% if (typeof state !== 'undefined' && state) { %><%- JSON.stringify(state) %><% } else { %>null<% } %>;
-      window.__INITIAL_MODULES__ = <% if (typeof modules !== 'undefined' && modules) { %><%- JSON.stringify(modules) %><% } else { %>null<% } %>;
+      window.__INITIAL_MODULES__ = <% if (typeof modules !== 'undefined' && modules) { %><%- JSON.stringify(modules) %><% } else { %>[]<% } %>;
     </script>
+
+    <script src="/vendor.js"></script>
     <script src="/app.js"></script>
   </body>
 </html>

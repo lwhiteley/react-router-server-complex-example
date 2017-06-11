@@ -13,8 +13,7 @@ class Layout extends Component {
         <div className="content">
           { children }
         </div>
-        {/* TODO: only show devtool in dev mode */}
-        <DevTools />
+        
       </div>
     )
   }

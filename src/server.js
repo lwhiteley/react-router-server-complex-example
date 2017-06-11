@@ -12,6 +12,9 @@ import morgan from 'morgan';
 import cuid from 'cuid';
 import path from 'path';
 import serveStatic from 'serve-static';
+import webpack from 'webpack';
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import webpackHotMiddleware from 'webpack-hot-middleware';
 
 import feathers from 'feathers';
 import rest from 'feathers-rest';
@@ -22,10 +25,13 @@ import logger from 'feathers-logger';
 import handler from 'feathers-errors/handler';
 import configuration from 'feathers-configuration';
 
-import App from '../build/server/app';
+import App from './client/app';
+// import App from '../build/public/app';
 import winston from './logger';
 import api from './api';
 import stats from '../build/public/stats.json';
+
+const config = require('../webpack.config.dev');
 
 mongoose.Promise = global.Promise;
 
@@ -57,6 +63,19 @@ app.use((req, res, next) => {
 });
 
 app.use(morgan(morganSettings.format, morganSettings.options));
+
+// Run Webpack dev server in development mode
+if (process.env.NODE_ENV === 'development') {
+  // console.log(config)
+  const compiler = webpack(config);
+  app.use(
+    webpackDevMiddleware(compiler, {
+      noInfo: true,
+      publicPath: config.output.publicPath,
+    })
+  );
+  app.use(webpackHotMiddleware(compiler));
+}
 
 // Enable Socket.io
 app
@@ -101,12 +120,12 @@ app.get('/*', (req, res) => {
             html,
             head,
             state,
-            files: [...extracted.map(module => module.files)],
+            files: [...extracted.map(module => module && module.files)],
             modules: extracted,
           });
         }
       })
-      .catch(err => req.app.error(err));
+      .catch(err => req.app.error(err, req.appContext.logContext));
   }
 });
 

@@ -1,8 +1,8 @@
 var webpack = require('webpack');
-import path from 'path';
-import StatsPlugin from 'stats-webpack-plugin';
-import fs from 'fs';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
+const path = require('path');
+const StatsPlugin = require('stats-webpack-plugin');
+const fs = require('fs');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const nodeModules = {};
 fs.readdirSync(path.join(__dirname, 'node_modules'))
@@ -13,19 +13,7 @@ const extractTextPlugin = new ExtractTextPlugin('[name].css');
 extractTextPlugin.options.allChunks = true;
 
 const config = server => ({
-  entry: {
-    app: [
-      ...(server? ['babel-polyfill']: 
-      ['eventsource-polyfill',
-      'webpack-hot-middleware/client',
-      'webpack/hot/only-dev-server',]),
-      path.join(__dirname, 'src/client', (server ? 'app.js' : 'client.js')),
-    ],
-    vendor: [
-      'react',
-      'react-dom',
-    ],
-  },
+  
 
   output:{
     path: server ? path.join(__dirname, 'build', 'server') : path.join(__dirname, 'build', 'public'),
@@ -39,8 +27,11 @@ const config = server => ({
 
   devtool: 'source-map',
 
-  ...(server ? {target: 'node'} : {}),
-
+  target: 'node',
+  node: {
+    __filename: true,
+    __dirname: true,
+  },
   resolve: {
     extensions: ['.js', '.jsx'],
      modules: [
@@ -62,12 +53,6 @@ const config = server => ({
   },
 
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: Infinity,
-      filename: 'vendor.js',
-    }),
     new StatsPlugin('stats.json', {
       chunkModules: true,
       exclude: [/node_modules/]
@@ -81,4 +66,4 @@ const config = server => ({
   ]
 });
 
-module.exports = [config(true), config(false)];
+module.exports = config(true);

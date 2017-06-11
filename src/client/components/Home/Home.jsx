@@ -46,7 +46,7 @@ class Home extends Component {
         
 
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum imperdiet elit eget diam placerat, ac
+          Loremv ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum imperdiet elit eget diam placerat, ac
           suscipit neque feugiat. Etiam aliquet lectus ut eros vehicula maximus. Sed eu condimentum massa, at
           pellentesque felis. Donec vitae nulla blandit, cursus orci nec, interdum ante. Maecenas eu porta elit, sit
           amet malesuada metus. In tristique ac nunc vitae bibendum. Cras vehicula augue vel orci sodales, blandit

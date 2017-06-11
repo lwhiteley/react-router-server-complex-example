@@ -1,8 +1,8 @@
 var webpack = require('webpack');
-import path from 'path';
-import StatsPlugin from 'stats-webpack-plugin';
-import fs from 'fs';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
+const path = require('path');
+const StatsPlugin = require('stats-webpack-plugin');
+const fs = require('fs');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const nodeModules = {};
 fs.readdirSync(path.join(__dirname, 'node_modules'))
@@ -15,10 +15,11 @@ extractTextPlugin.options.allChunks = true;
 const config = server => ({
   entry: {
     app: [
-      ...(server? ['babel-polyfill']: 
-      ['eventsource-polyfill',
+      'eventsource-polyfill',
+      'react-hot-loader/patch',
+      'webpack-dev-server/client?http://localhost:3001',
       'webpack-hot-middleware/client',
-      'webpack/hot/only-dev-server',]),
+      'webpack/hot/only-dev-server',
       path.join(__dirname, 'src/client', (server ? 'app.js' : 'client.js')),
     ],
     vendor: [
@@ -39,7 +40,7 @@ const config = server => ({
 
   devtool: 'source-map',
 
-  ...(server ? {target: 'node'} : {}),
+//   ...(server ? {target: 'node'} : {}),
 
   resolve: {
     extensions: ['.js', '.jsx'],
@@ -54,13 +55,20 @@ const config = server => ({
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        loader: 'babel-loader'
+        loaders: ['react-hot-loader/webpack','babel-loader']
       },
       { test: /\.css$/, loader: extractTextPlugin.extract(['css-loader']) },
       { test: /\.(gif|png|jpg)$/, loader: 'file-loader' }
     ]
   },
+  devServer: {
+    hot: true, // Tell the dev-server we're using HMR
+    port: 3001,
 
+    historyApiFallback: true,
+    contentBase: path.resolve(__dirname, 'build/public'),
+    publicPath: '/'
+  },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.optimize.CommonsChunkPlugin({
@@ -68,6 +76,10 @@ const config = server => ({
       minChunks: Infinity,
       filename: 'vendor.js',
     }),
+     new webpack.NamedModulesPlugin(),
+    // prints more readable module names in the browser console on HMR updates
+
+    new webpack.NoEmitOnErrorsPlugin(),
     new StatsPlugin('stats.json', {
       chunkModules: true,
       exclude: [/node_modules/]
@@ -81,4 +93,4 @@ const config = server => ({
   ]
 });
 
-module.exports = [config(true), config(false)];
+module.exports = config(false);
