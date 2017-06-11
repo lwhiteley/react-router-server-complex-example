@@ -22,32 +22,26 @@ const mountApp = document.getElementById('main');
 //     // For hot reloading of react components
 //   });
 
-render(
-  <AppContainer>
-    <ServerStateProvider state={__INITIAL_STATE__}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ServerStateProvider>
+const renderClient = (Component) => {
+  render(
+    <AppContainer>
+      <ServerStateProvider state={__INITIAL_STATE__}>
+        <BrowserRouter>
+          <Component />
+        </BrowserRouter>
+      </ServerStateProvider>
+    </AppContainer>,
+    mountApp
+  );
+};
 
-  </AppContainer>,
-  mountApp
-);
+renderClient(App);
 
 if (module.hot) {
   module.hot.accept('./app', () => {
     // If you use Webpack 2 in ES modules mode, you can
     // use <App /> here rather than require() a <NextApp />.
-    const NextApp = require('./app').default; // eslint-disable-line global-require
-    render(
-      <AppContainer>
-        <ServerStateProvider state={__INITIAL_STATE__}>
-          <BrowserRouter>
-            <NextApp />
-          </BrowserRouter>
-        </ServerStateProvider>
-      </AppContainer>,
-      mountApp
-    );
+    // const NextApp = require('./app').default; // eslint-disable-line global-require
+    renderClient(App);
   });
 }

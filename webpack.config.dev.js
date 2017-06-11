@@ -17,9 +17,9 @@ const config = server => ({
     app: [
       'eventsource-polyfill',
       'react-hot-loader/patch',
-      'webpack-dev-server/client?http://localhost:3001',
       'webpack-hot-middleware/client',
-      'webpack/hot/only-dev-server',
+      'webpack-dev-server/client?http://localhost:3001',
+      'webpack/hot/dev-server',
       path.join(__dirname, 'src/client', (server ? 'app.js' : 'client.js')),
     ],
     vendor: [
@@ -55,7 +55,7 @@ const config = server => ({
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        loaders: ['react-hot-loader/webpack','babel-loader']
+        loaders: ['babel-loader']
       },
       { test: /\.css$/, loader: extractTextPlugin.extract(['css-loader']) },
       { test: /\.(gif|png|jpg)$/, loader: 'file-loader' }
@@ -67,7 +67,10 @@ const config = server => ({
 
     historyApiFallback: true,
     contentBase: path.resolve(__dirname, 'build/public'),
-    publicPath: '/'
+    publicPath: '/',
+    proxy: {
+        '*': 'http://localhost:3000'
+    }
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),

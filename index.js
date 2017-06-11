@@ -23,6 +23,6 @@ if (process.env.NODE_ENV === 'production') {
   }
   require('babel-register')(register);
   require('babel-polyfill');
-
+  require('react-hot-loader/patch');
   require('./src/server');
 }
