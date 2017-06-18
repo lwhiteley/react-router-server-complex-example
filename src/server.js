@@ -1,50 +1,117 @@
 import React from 'react';
-import App from '../build/server/app';
 import { renderToString, extractModules } from 'react-router-server';
 import { StaticRouter } from 'react-router';
-import express from 'express';
+import Helmet from 'react-helmet';
+
+import compression from 'compression';
+import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
+import methodOverride from 'method-override';
+import requestIp from 'request-ip';
+import morgan from 'morgan';
+import cuid from 'cuid';
 import path from 'path';
+import serveStatic from 'serve-static';
+
+import feathers from 'feathers';
+import rest from 'feathers-rest';
+import hooks from 'feathers-hooks';
+import socketio from 'feathers-socketio';
+import logger from 'feathers-logger';
+// import errors from 'feathers-errors';
+import handler from 'feathers-errors/handler';
+import configuration from 'feathers-configuration';
+
+import App from '../build/server/app';
+import winston from './logger';
+import api from './api';
 import stats from '../build/public/stats.json';
 
-const app = express();
-app.use(express.static(path.join(__dirname, '..', 'build', 'public')));
+mongoose.Promise = global.Promise;
 
-app.get('/*', function (req, res) {
+const app = feathers()
+  .configure(configuration(__dirname))
+  .configure(logger(winston));
+
+mongoose.connect(app.get('dbConnectionString'));
+
+const morganSettings = app.get('morgan');
+const port = app.get('port');
+
+app.use(requestIp.mw());
+app.use((req, res, next) => {
+  req.id = cuid();
+  req.app = app;
+  /**
+   * instead of polluting the req object
+   * use the appContext namespace to store
+   * custom values to pass along the middleware chain
+   */
+  req.appContext = {
+    logContext: {
+      clientIp: req.clientIp,
+      reqId: req.id,
+    },
+  };
+  next();
+});
+
+app.use(morgan(morganSettings.format, morganSettings.options));
+
+// Enable Socket.io
+app
+  .configure(socketio())
+  .use(compression())
+  .use(methodOverride())
+  .use(bodyParser.json({ limit: '20mb' }))
+  .use(bodyParser.urlencoded({ limit: '20mb', extended: false }))
+  // Enable REST services
+  .configure(rest())
+  .configure(api())
+  .configure(hooks())
+  .use(serveStatic(path.join(__dirname, '..', 'build', 'public')));
+
+// app.use(`${config.apiBasePath}`, (req, res) => {
+//   const notFound = new errors.NotFound('not found');
+//   res.status(404).send(notFound);
+// });
+
+app.get('/*', (req, res) => {
   if (req.url) {
-    const context = {}
+    const context = {};
     const server = (
-      <StaticRouter
-        location={req.url}
-        context={context}
-      >
-        <App/>
+      <StaticRouter location={req.url} context={context}>
+        <App />
       </StaticRouter>
     );
 
     renderToString(server)
       .then(({ html, state, modules }) => {
+        const head = Helmet.rewind();
         if (context.url) {
           res.writeHead(302, {
-            Location: context.url
-          })
-          res.end()
+            Location: context.url,
+          });
+          res.end();
         } else {
           const extracted = extractModules(modules, stats);
-          res.render(
-            path.join(__dirname, '..', 'index.ejs'),
-            {
-              html,
-              state,
-              files: [].concat.apply([], extracted.map(module => module.files)),
-              modules: extracted
-            }
-          );
+          res.render(path.join(__dirname, '..', 'index.ejs'), {
+            html,
+            head,
+            state,
+            files: [...extracted.map(module => module.files)],
+            modules: extracted,
+          });
         }
       })
-      .catch(err => console.error(err));
+      .catch(err => req.app.error(err));
   }
 });
 
-app.listen(3000, function () {
-  console.log('Example site listening on 3000!');
+app.use(handler());
+
+app.listen(port, () => {
+  app.info(`site listening on http://localhost:${port}`);
 });
+
+export default app;

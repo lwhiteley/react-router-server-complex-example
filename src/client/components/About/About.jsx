@@ -1,7 +1,9 @@
 import * as React from 'react';
+import Helmet from 'react-helmet';
 
 const Component = (props) => (
   <div>
+    <Helmet title={"About"} />
     <h1>
       About
     </h1>

@@ -1,31 +1,49 @@
-import React, { Component, PropTypes } from 'react';
-import { fetchState } from 'react-router-server';
-import '../styles/home.css';
+import React, { Component } from 'react';
+import  PropTypes from 'prop-types';
+import { observer, inject } from 'mobx-react';
+import Helmet from 'react-helmet';
+import './home.css';
 
-@fetchState(
-  state => ({
-    isLoaded: state.message,
-    message: state.message
-  }),
-  actions => ({ done: actions.done })
-)
+@inject("home") @observer
 class Home extends Component {
-  componentWillMount() {
-    if (!this.props.isLoaded) {
-      // Async data loading
-      setTimeout(() => {
-        this.props.done({ message: 'I am ready to be displayed' });
-      }, 50);
-    }
-  }
 
   render() {
-    const { message } = this.props;
+    const { home } = this.props;
     return (
       <div className="home">
+        <Helmet title={"Home"} />
         <div className="home-message">
-          {message}
+          {home.message}
         </div>
+
+        <div className="counter-cntr">
+          <div className="counter">
+            {home.counterDisplay}
+          </div>
+
+          <div className="clearfix">
+            <div className="pointer increment-btn" onClick={() => {
+                const { home } = this.props;
+                home.incrementCounter();
+              }}>
+              Increment
+            </div>
+            <div className="pointer increment-btn" onClick={() => {
+                const { home } = this.props;
+                home.decrementCounter();
+              }}>
+              Decrement
+            </div>
+            <div className="pointer increment-btn" onClick={() => {
+                const { home } = this.props;
+                home.resetCounter();
+              }}>
+              Reset
+            </div>
+          </div>
+        </div>
+
+        
 
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum imperdiet elit eget diam placerat, ac

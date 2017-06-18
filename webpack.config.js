@@ -13,7 +13,7 @@ extractTextPlugin.options.allChunks = true;
 
 const config = server => ({
   entry: {
-    app: path.join(__dirname, 'src', (server ? 'app.js' : 'client.js'))
+    app: ['babel-polyfill', path.join(__dirname, 'src/client', (server ? 'app.js' : 'client.js'))]
   },
 
   output:{
