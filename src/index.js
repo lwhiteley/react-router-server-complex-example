@@ -16,7 +16,7 @@ import logger from 'feathers-logger';
 import configuration from 'feathers-configuration';
 
 import api from './server';
-import { reqContext } from './middlewares';
+import middlewares from './middlewares';
 import winston from './logger';
 import App from '../build/server/app';
 import stats from '../build/public/stats.json';
@@ -31,7 +31,7 @@ const port = app.get('port');
 app.use(morgan(morganSettings.format, morganSettings.options));
 
 app.use(requestIp.mw());
-app.configure(reqContext);
+app.configure(middlewares.reqContext());
 
 app
   .use(compression())

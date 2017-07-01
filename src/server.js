@@ -1,9 +1,5 @@
 import mongoose from 'mongoose';
-import compression from 'compression';
 import bodyParser from 'body-parser';
-import methodOverride from 'method-override';
-import requestIp from 'request-ip';
-import morgan from 'morgan';
 
 import feathers from 'feathers';
 import rest from 'feathers-rest';
@@ -21,7 +17,6 @@ import swagger from 'feathers-swagger';
 import configuration from 'feathers-configuration';
 
 import api from './api';
-import { reqContext } from './middlewares';
 import winston from './logger';
 
 mongoose.Promise = global.Promise;
@@ -32,17 +27,9 @@ const app = feathers()
 
 mongoose.connect(app.get('dbConnectionString'));
 
-const morganSettings = app.get('morgan');
-
 app
-  .use(compression())
-  .use(methodOverride())
   .use(bodyParser.json({ limit: '20mb' }))
   .use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
-
-app.use(morgan(morganSettings.format, morganSettings.options));
-app.use(requestIp.mw());
-app.configure(reqContext);
 
 // Enable Socket.io
 app
