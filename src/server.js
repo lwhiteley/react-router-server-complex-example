@@ -11,13 +11,14 @@ import requestIp from 'request-ip';
 import morgan from 'morgan';
 import cuid from 'cuid';
 import path from 'path';
-import serveStatic from 'serve-static';
 
 import feathers from 'feathers';
 import rest from 'feathers-rest';
 import hooks from 'feathers-hooks';
 import socketio from 'feathers-socketio';
 import logger from 'feathers-logger';
+import authentication from 'feathers-authentication';
+import authManagement from 'feathers-authentication-management';
 // import errors from 'feathers-errors';
 import handler from 'feathers-errors/handler';
 import configuration from 'feathers-configuration';
@@ -26,6 +27,10 @@ import App from '../build/server/app';
 import winston from './logger';
 import api from './api';
 import stats from '../build/public/stats.json';
+
+const local = require('feathers-authentication-local');
+const jwt = require('feathers-authentication-jwt');
+const swagger = require('feathers-swagger');
 
 mongoose.Promise = global.Promise;
 
@@ -42,6 +47,7 @@ app.use(requestIp.mw());
 app.use((req, res, next) => {
   req.id = cuid();
   req.app = app;
+
   /**
    * instead of polluting the req object
    * use the appContext namespace to store
@@ -60,16 +66,29 @@ app.use(morgan(morganSettings.format, morganSettings.options));
 
 // Enable Socket.io
 app
+    .configure(rest())
   .configure(socketio())
   .use(compression())
   .use(methodOverride())
   .use(bodyParser.json({ limit: '20mb' }))
   .use(bodyParser.urlencoded({ limit: '20mb', extended: false }))
-  // Enable REST services
-  .configure(rest())
+    .configure(hooks())
+    // .configure(authentication)
+    .configure(authentication({ secret: 'supersecret' }))
+    .configure(local())
+    .configure(jwt())
+    .configure(authManagement({}))
+
+    // Enable REST services
+    .configure(swagger({
+      docsPath: '/docs',
+      info: {
+        title: 'A test',
+        description: 'A description',
+      },
+    }))
   .configure(api())
-  .configure(hooks())
-  .use(serveStatic(path.join(__dirname, '..', 'build', 'public')));
+  .use(feathers.static(path.join(__dirname, '..', 'build', 'public')));
 
 // app.use(`${config.apiBasePath}`, (req, res) => {
 //   const notFound = new errors.NotFound('not found');
