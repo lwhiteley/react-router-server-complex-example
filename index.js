@@ -28,7 +28,7 @@ if (process.env.NODE_ENV !== 'production') {
     };
     require('babel-register')(register);
     require('babel-polyfill');
-    server = require('./src/server');
+    server = require('./src');
 }
 
 module.exports = server;
