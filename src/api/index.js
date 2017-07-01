@@ -9,9 +9,11 @@ export default () => {
   return function api() {
     const app = this;
     return Object.values(models).forEach((data) => {
-      const apiPath = data.apiPath || plural(get(data, 'Model.modelName'));
-      const serviceData = omit(data, ['apiPath']);
-      app.use(`${apiPath.toLowerCase()}`, service(serviceData));
+      data.apiPath = data.apiPath || plural(get(data, 'Model.modelName'));
+      data.apiPath = data.apiPath.toLowerCase();
+      const serviceData = omit(data, ['apiPath', 'hooks']);
+      app.use(`${data.apiPath}`, service(serviceData));
+      if (data.hooks) data.hooks(app, data);
     });
   };
 };
