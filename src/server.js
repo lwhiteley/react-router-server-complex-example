@@ -7,7 +7,6 @@ import hooks from 'feathers-hooks';
 import socketio from 'feathers-socketio';
 import logger from 'feathers-logger';
 import authentication from 'feathers-authentication';
-import authManagement from 'feathers-authentication-management';
 // import errors from 'feathers-errors';
 import handler from 'feathers-errors/handler';
 
@@ -18,6 +17,7 @@ import configuration from 'feathers-configuration';
 
 import api from './api';
 import winston from './logger';
+import services from './api/services';
 
 mongoose.Promise = global.Promise;
 
@@ -39,7 +39,7 @@ app
   .configure(authentication({ secret: 'supersecret' }))
   .configure(local())
   .configure(jwt())
-  .configure(authManagement({}))
+  .configure(services())
   // Enable REST services
   .configure(
     swagger({

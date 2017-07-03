@@ -1,25 +1,99 @@
-/**
- * Created by layton on 6/18/17.
- */
-const auth = require('feathers-authentication');
-const local = require('feathers-authentication-local');
-const { discard } = require('feathers-hooks-common');
+const _ = require('lodash');
+const { authenticate } = require('feathers-authentication').hooks;
+const commonHooks = require('feathers-hooks-common');
+const { restrictToOwner } = require('feathers-authentication-hooks');
+const verifyHooks = require('feathers-authentication-management').hooks;
+const { hashPassword } = require('feathers-authentication-local').hooks;
 
-export default (app, data) => {
-  app.service('users').after(discard('password', 'salt'));
+const isEnabled = require('../../hooks/is-enabled');
+const setDefaultRole = require('../../hooks/set-default-role');
+const setFirstUserToRole = require('../../hooks/set-first-user-to-role');
+const sendVerificationEmail = require('../../hooks/send-verification-email');
+const hasPermissionBoolean = require('../../hooks/has-permission-boolean');
+const preventDisabledAdmin = require('../../hooks/prevent-disabled-admin');
 
-  app.service(data.apiPath).hooks({
-    before: {
-      find: [
-        auth.hooks.authenticate('jwt'),
-      ],
-      update: discard('_id', 'accountNumber'),
-      patch: discard('_id', 'accountNumber'),
-      create: [
-        discard('_id', 'accountNumber'),
-        local.hooks.hashPassword({ passwordField: 'password' }),
-      ],
+const restrict = [
+  authenticate('jwt'),
+  isEnabled(),
+  commonHooks.unless(
+    hasPermissionBoolean('manageUsers'),
+    restrictToOwner({
+      idField: '_id',
+      ownerField: '_id',
+    })
+  ),
+];
+
+const schema = {
+  include: [
+    {
+      service: 'roles',
+      nameAs: 'access',
+      parentField: 'role',
+      childField: 'role',
     },
-  });
+  ],
 };
 
+const serializeSchema = {
+  computed: {
+    permissions: item => _.get(item, 'access.permissions'),
+  },
+  exclude: ['access', '_include'],
+};
+
+module.exports = {
+  before: {
+    all: [],
+    find: [...restrict],
+    get: [...restrict],
+    create: [
+      hashPassword(),
+      verifyHooks.addVerification(),
+      setDefaultRole(),
+      setFirstUserToRole({ role: 'admin' }),
+      preventDisabledAdmin(),
+    ],
+    update: [...restrict, hashPassword(), preventDisabledAdmin()],
+    patch: [...restrict, preventDisabledAdmin()],
+    remove: [...restrict],
+  },
+
+  after: {
+    all: [
+      commonHooks.when(
+        hook => hook.params.provider,
+        commonHooks.discard(
+          'password',
+          '_computed',
+          'verifyExpires',
+          'resetExpires',
+          'verifyChanges',
+          'accountNumber'
+        )
+      ),
+    ],
+    find: [
+      commonHooks.populate({ schema }),
+      commonHooks.serialize(serializeSchema),
+    ],
+    get: [
+      commonHooks.populate({ schema }),
+      commonHooks.serialize(serializeSchema),
+    ],
+    create: [sendVerificationEmail(), verifyHooks.removeVerification()],
+    update: [],
+    patch: [],
+    remove: [],
+  },
+
+  error: {
+    all: [],
+    find: [],
+    get: [],
+    create: [],
+    update: [],
+    patch: [],
+    remove: [],
+  },
+};

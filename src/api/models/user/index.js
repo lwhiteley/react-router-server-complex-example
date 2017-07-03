@@ -6,16 +6,23 @@ import sequenceGenerator from 'mongoose-sequence-plugin';
 
 import hooks from './user.hooks';
 
+const validatePattern = require('../../utils/validate-pattern');
+
 const unique = true;
 const required = true;
+const trim = true;
 
 const schema = new Schema({
-  username: { type: String, unique, required },
-  email: { type: String, unique, required },
-  password: { type: String, required },
   firstName: { type: String, required },
   lastName: { type: String, required },
   address: { type: Object },
+
+  // Middleware Controlled props
+
+  username: { type: String, unique, required },
+  email: { type: String, unique, required },
+  password: { type: String, required },
+
   isVerified: { type: Boolean },
   verifyToken: { type: String },
   verifyShortToken: { type: String },
@@ -24,6 +31,21 @@ const schema = new Schema({
   resetToken: { type: String },
   resetShortToken: { type: String },
   resetExpires: { type: Date },
+  preferredComm: { type: String },
+
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+
+  isEnabled: {
+    type: Boolean,
+    default: true,
+  },
+  role: {
+    required,
+    type: String,
+    trim,
+    validate: validatePattern('isTitle'),
+  },
 });
 
 schema.plugin(sequenceGenerator, {
@@ -32,10 +54,12 @@ schema.plugin(sequenceGenerator, {
   maxSaveRetries: 2,
 });
 
-const model = mongoose.model('User', schema);
+const Model = mongoose.model('User', schema);
 
 export default {
   apiPath: 'users',
-  Model: model,
+  service: {
+    Model,
+  },
   hooks,
 };

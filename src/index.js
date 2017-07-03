@@ -40,6 +40,8 @@ app
   .use(bodyParser.urlencoded({ limit: '20mb', extended: false }))
   .use(feathers.static(path.join(__dirname, '..', 'build', 'public')));
 
+app.use(app.get('apiPrefix') || '/api', api);
+
 app.get('/*', (req, res) => {
   if (req.url) {
     const context = {};
@@ -73,7 +75,6 @@ app.get('/*', (req, res) => {
 });
 
 const init = () => {
-  app.use(app.get('apiPrefix') || '/api', api);
   const server = app.listen(port, () => {
     app.info(`site listening on http://localhost:${port}`);
   });

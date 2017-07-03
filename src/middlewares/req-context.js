@@ -1,7 +1,7 @@
 import cuid from 'cuid';
 
-export default () => {
-  return function reqContext() {
+export default () =>
+  function reqContext() {
     const app = this;
     app.use((req, res, next) => {
       req.id = cuid();
@@ -21,4 +21,3 @@ export default () => {
       next();
     });
   };
-};
