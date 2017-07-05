@@ -34,14 +34,6 @@ const schema = new Schema({
       enum: sitePermissions,
     },
   ],
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  },
 });
 
 const Model = mongoose.model('Role', schema);

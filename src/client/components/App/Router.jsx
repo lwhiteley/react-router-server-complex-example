@@ -37,6 +37,25 @@ const Router = () =>  (
                 </Module>
                 }
             />
+            <Route
+                exact
+                path="/signup"
+                render={matchProps =>
+                <Module key="/signup" module={() => System.import('../Signup')}>
+                    {module => module ? <module.default {...matchProps}/> : null}
+                </Module>
+                }
+            />
+
+            <Route
+                exact
+                path="/signup/success"
+                render={matchProps =>
+                <Module key="/signup/success" module={() => System.import('../Signup/Success')}>
+                    {module => module ? <module.default {...matchProps}/> : null}
+                </Module>
+                }
+            />
             <Route component={NoMatch}/>
         </Switch>
     );

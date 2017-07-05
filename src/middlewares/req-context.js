@@ -8,15 +8,13 @@ export default () =>
       req.app = app;
 
       /**
-   * instead of polluting the req object
-   * use the appContext namespace to store
-   * custom values to pass along the middleware chain
-   */
-      req.appContext = {
-        logContext: {
-          clientIp: req.clientIp,
-          reqId: req.id,
-        },
+       * instead of polluting the req object
+       * use the context namespace to store
+       * custom values to pass along the middleware chain
+       */
+      req.context = {
+        clientIp: req.clientIp,
+        requestId: req.id,
       };
       next();
     });

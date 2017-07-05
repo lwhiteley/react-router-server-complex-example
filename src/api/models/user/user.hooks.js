@@ -48,14 +48,24 @@ module.exports = {
     find: [...restrict],
     get: [...restrict],
     create: [
+      commonHooks.discard('_id', 'accountNumber'),
       hashPassword(),
       verifyHooks.addVerification(),
       setDefaultRole(),
       setFirstUserToRole({ role: 'admin' }),
       preventDisabledAdmin(),
     ],
-    update: [...restrict, hashPassword(), preventDisabledAdmin()],
-    patch: [...restrict, preventDisabledAdmin()],
+    update: [
+      ...restrict,
+      commonHooks.discard('_id', 'accountNumber'),
+      hashPassword(),
+      preventDisabledAdmin(),
+    ],
+    patch: [
+      ...restrict,
+      commonHooks.discard('_id', 'accountNumber'),
+      preventDisabledAdmin(),
+    ],
     remove: [...restrict],
   },
 
@@ -68,8 +78,7 @@ module.exports = {
           '_computed',
           'verifyExpires',
           'resetExpires',
-          'verifyChanges',
-          'accountNumber'
+          'verifyChanges'
         )
       ),
     ],

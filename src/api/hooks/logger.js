@@ -1,7 +1,7 @@
 // A hook that logs service method before, after and error
 module.exports = function loggerSetup() {
   return function setup(hook) {
-    const logger = hook.app.logger;
+    const logger = hook.app.get('logger');
     let message = `${hook.type}: ${hook.path} - Method: ${hook.method}`;
 
     if (hook.type === 'error') {

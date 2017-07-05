@@ -1,6 +1,7 @@
 import createService from 'feathers-mongoose';
 import plural from 'plural';
 import get from 'lodash/get';
+import './utils/mongoose-setup';
 import models from './models';
 
 export default () => {

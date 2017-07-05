@@ -3,7 +3,7 @@ const { getItems } = require('feathers-hooks-common');
 
 module.exports = options => hook =>
   new Promise((resolve, reject) => {
-    const logger = hook.app.logger;
+    const logger = hook.app.get('logger');
     hook.app.service('users').find({ query: {} }).then(
       (found) => {
         logger.info('Checking if first user');

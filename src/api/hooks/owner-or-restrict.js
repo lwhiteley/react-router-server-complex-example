@@ -1,3 +1,5 @@
+// import plural from 'plural';
+
 const _ = require('lodash');
 const errors = require('feathers-errors');
 

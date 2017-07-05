@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import bodyParser from 'body-parser';
 
 import feathers from 'feathers';
 import rest from 'feathers-rest';
@@ -9,6 +8,7 @@ import logger from 'feathers-logger';
 import authentication from 'feathers-authentication';
 // import errors from 'feathers-errors';
 import handler from 'feathers-errors/handler';
+import notFound from 'feathers-errors/not-found';
 
 import local from 'feathers-authentication-local';
 import jwt from 'feathers-authentication-jwt';
@@ -27,36 +27,22 @@ const app = feathers()
 
 mongoose.connect(app.get('dbConnectionString'));
 
-app
-  .use(bodyParser.json({ limit: '20mb' }))
-  .use(bodyParser.urlencoded({ limit: '20mb', extended: false }));
-
 // Enable Socket.io
 app
   .configure(rest())
+  .use((req, res, next) => {
+    req.feathers.context = req.context;
+    next();
+  })
   .configure(socketio())
   .configure(hooks())
-  .configure(authentication({ secret: 'supersecret' }))
+  .configure(authentication(app.get('authentication')))
   .configure(local())
   .configure(jwt())
   .configure(services())
-  // Enable REST services
-  .configure(
-    swagger({
-      docsPath: '/docs',
-      info: {
-        title: 'A test',
-        description: 'A description',
-      },
-    })
-  )
+  .configure(swagger(app.get('swagger')))
   .configure(api());
 
-// app.use(`${config.apiBasePath}`, (req, res) => {
-//   const notFound = new errors.NotFound('not found');
-//   res.status(404).send(notFound);
-// });
-
-app.use(handler());
+app.use(notFound()).use(handler());
 
 export default app;

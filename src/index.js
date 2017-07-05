@@ -31,7 +31,6 @@ const port = app.get('port');
 app.use(morgan(morganSettings.format, morganSettings.options));
 
 app.use(requestIp.mw());
-app.configure(middlewares.reqContext());
 
 app
   .use(compression())
@@ -39,6 +38,8 @@ app
   .use(bodyParser.json({ limit: '20mb' }))
   .use(bodyParser.urlencoded({ limit: '20mb', extended: false }))
   .use(feathers.static(path.join(__dirname, '..', 'build', 'public')));
+
+app.configure(middlewares.reqContext());
 
 app.use(app.get('apiPrefix') || '/api', api);
 
@@ -76,7 +77,9 @@ app.get('/*', (req, res) => {
 
 const init = () => {
   const server = app.listen(port, () => {
+    app.info('--------------------------');
     app.info(`site listening on http://localhost:${port}`);
+    app.info('--------------------------');
   });
   api.setup(server);
   return app;

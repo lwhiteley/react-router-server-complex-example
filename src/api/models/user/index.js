@@ -18,7 +18,7 @@ const schema = new Schema({
   address: { type: Object },
 
   // Middleware Controlled props
-
+  cellphone: { type: String },
   username: { type: String, unique, required },
   email: { type: String, unique, required },
   password: { type: String, required },
@@ -32,9 +32,6 @@ const schema = new Schema({
   resetShortToken: { type: String },
   resetExpires: { type: Date },
   preferredComm: { type: String },
-
-  createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
 
   isEnabled: {
     type: Boolean,

@@ -8,19 +8,20 @@ module.exports = function emailService() {
   // const paginate = app.get('paginate');
 
   // Initialize our service with any options it requires
-  app.use('/emails', Mailer(smtpTransport(app.get('mailer'))));
+  app.use('/emails', Mailer(smtpTransport(app.get('mailer').options)));
 
   // Get our initialized service so that we can register hooks and filters
   const service = app.service('emails');
 
   app.sendEmail = (email) => {
+    const logger = app.get('logger');
     return service.create(email)
       .then((result) => {
-        app.logger.info('Sent email', result);
+        logger.info('Sent email', result);
         return result;
       })
       .catch((err) => {
-        app.logger.error('Error sending email', err);
+        logger.error('Error sending email', err);
         return err;
       });
   };

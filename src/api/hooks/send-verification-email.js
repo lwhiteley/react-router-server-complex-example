@@ -8,7 +8,11 @@ module.exports = () => (hook) => {
   const user = hook.result;
 
   if (hook.data && hook.data.email && user) {
-    accountService(hook.app).notifier('resendVerifySignup', user);
+    accountService(hook.app)
+      .notifier('resendVerifySignup', user)
+      .catch((err) => {
+        hook.app.error(`cound not send email: ${err.message}`, err);
+      });
     return hook;
   }
 
