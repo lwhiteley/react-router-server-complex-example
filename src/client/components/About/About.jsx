@@ -1,9 +1,9 @@
 import * as React from 'react';
 import Helmet from 'react-helmet';
 
-const Component = (props) => (
+const Component = () => (
   <div>
-    <Helmet title={"About"} />
+    <Helmet title={'About'} />
     <h1>
       About
     </h1>
@@ -15,7 +15,7 @@ const Component = (props) => (
       Contact
     </h1>
     <p>
-      John Doe<br/>
+      John Doe<br />
       john.doe@gmail.com
     </p>
   </div>

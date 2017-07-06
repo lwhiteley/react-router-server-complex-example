@@ -1,17 +1,17 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-export default class BaseTemplate extends Component {
-  render() {
-    const { hashLink } = this.props.data;
-    return (
-      <div>
-        <p>[Default template]</p>
-        {hashLink}
-      </div>
-    );
-  }
-}
+const BaseTemplate = (props) => {
+  const { hashLink } = props.data;
+  return (
+    <div>
+      <p>[Default template]</p>
+      {hashLink}
+    </div>
+  );
+};
+
+export default BaseTemplate;
 
 BaseTemplate.propTypes = {
   data: PropTypes.shape({

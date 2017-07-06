@@ -51,7 +51,7 @@ export default observer(({ field }) => (
     {(field.files && field.files[0].length) ? <div>
       <h2>Uploading {field.files[0].length} files...</h2>
       <div>{field.files[0].map(file =>
-        <button
+        (<button
           key={file.name}
           onClick={destroyPreview(file, field)}
           className={$.ctrl}
@@ -61,7 +61,7 @@ export default observer(({ field }) => (
             src={file.preview}
             alt={file.name}
           />
-        </button>)}
+        </button>))}
       </div>
     </div> : null}
   </div>
