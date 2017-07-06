@@ -56,6 +56,17 @@ const Router = () =>  (
                 </Module>
                 }
             />
+            <Route
+                exact
+                path="/auth/:action(verify-email|reset-password)/:token"
+                render={matchProps =>
+                <Module 
+                    key="/auth/:action(verify-email|reset-password)/token" 
+                    module={() => System.import('../Auth')}>
+                    {module => module ? <module.default {...matchProps}/> : null}
+                </Module>
+                }
+            />
             <Route component={NoMatch}/>
         </Switch>
     );

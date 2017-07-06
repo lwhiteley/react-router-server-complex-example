@@ -15,12 +15,17 @@ const Handlers = {
 export default (app, type, user = {}, notifierOptions = {}) => {
   const handler = Handlers[type];
   if (!handler) {
-    return Promise.reject(new GeneralError(`Template/Data could not be found for type: ${type}`));
+    return Promise.reject(
+      new GeneralError(
+        `Notify Failed => Template/Data could not be found for type: ${type}`
+      )
+    );
   }
 
   app.info(`Preparing email for ${type}`);
-  const { subject, tokenKey } = handler.data;
-  const hashLink = getLink(app, type, user[tokenKey]);
+  const { subject, tokenKey, appPath } = handler.data;
+  const urlPath = appPath || type;
+  const hashLink = getLink(app, urlPath, user[tokenKey]);
   const Template = handler.Template;
   const html = renderToString(
     <Template

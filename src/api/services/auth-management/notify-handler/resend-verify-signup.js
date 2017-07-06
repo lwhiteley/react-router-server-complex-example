@@ -7,5 +7,7 @@ export default {
   data: {
     subject: 'Confirm Signup',
     tokenKey: 'verifyToken',
+    appPath: 'verify-email',
+    action: 'resendVerifySignup',
   },
 };

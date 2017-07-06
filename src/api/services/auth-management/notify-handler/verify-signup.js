@@ -6,5 +6,6 @@ export default {
   Template,
   data: {
     subject: 'Thank you, your email has been verified',
+    action: 'verifySignup',
   },
 };
