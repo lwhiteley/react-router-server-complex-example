@@ -1,4 +1,4 @@
-import BaseTemplate from './BaseTemplate';
+import BaseTemplate from '../BaseTemplate';
 
 class Template extends BaseTemplate {}
 

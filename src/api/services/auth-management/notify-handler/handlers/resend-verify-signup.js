@@ -1,4 +1,4 @@
-import BaseTemplate from './BaseTemplate';
+import BaseTemplate from '../BaseTemplate';
 
 class Template extends BaseTemplate {}
 
@@ -7,7 +7,6 @@ export default {
   data: {
     subject: 'Confirm Signup',
     tokenKey: 'verifyToken',
-    appPath: 'verify-email',
-    action: 'resendVerifySignup',
+    path: 'verify-email',
   },
 };

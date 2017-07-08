@@ -3,17 +3,10 @@ import { renderToString } from 'react-dom/server';
 import { GeneralError } from 'feathers-errors';
 import Promise from 'bluebird';
 import getLink from '../../../utils/get-link';
-
-import resendVerifySignup from './resend-verify-signup';
-import verifySignup from './verify-signup';
-
-const Handlers = {
-  resendVerifySignup,
-  verifySignup,
-};
+import handlers from './handlers';
 
 export default (app, type, user = {}, notifierOptions = {}) => {
-  const handler = Handlers[type];
+  const handler = handlers[type];
   if (!handler) {
     return Promise.reject(
       new GeneralError(
@@ -23,10 +16,11 @@ export default (app, type, user = {}, notifierOptions = {}) => {
   }
 
   app.info(`Preparing email for ${type}`);
-  const { subject, tokenKey, appPath } = handler.data;
-  const urlPath = appPath || type;
+  const { subject, tokenKey, path } = handler.data;
+  const urlPath = path || type;
   const hashLink = getLink(app, urlPath, user[tokenKey]);
   const Template = handler.Template;
+  const adminEmail = app.get('adminEmail');
   const html = renderToString(
     <Template
       data={{
@@ -35,6 +29,7 @@ export default (app, type, user = {}, notifierOptions = {}) => {
         type,
         notifierOptions,
         meta: handler.data,
+        adminEmail,
       }}
     />
   );

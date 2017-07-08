@@ -20,5 +20,6 @@ BaseTemplate.propTypes = {
     type: PropTypes.string,
     notifierOptions: PropTypes.shape({}),
     meta: PropTypes.shape({}),
+    adminEmail: PropTypes.string,
   }).isRequired,
 };
