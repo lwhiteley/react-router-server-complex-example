@@ -1,9 +1,6 @@
 import { observable, action } from 'mobx';
-import AuthManagement from 'feathers-authentication-management/lib/client';
 
-import rest from '../../helpers/rest-client';
-
-const authManagement = new AuthManagement(rest);
+import authManagement from '../../helpers/auth-mgmt-client';
 
 class AuthManagementStore {
   @observable loading = true;

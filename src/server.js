@@ -5,13 +5,9 @@ import rest from 'feathers-rest';
 import hooks from 'feathers-hooks';
 import socketio from 'feathers-socketio';
 import logger from 'feathers-logger';
-import authentication from 'feathers-authentication';
 // import errors from 'feathers-errors';
 import handler from 'feathers-errors/handler';
 import notFound from 'feathers-errors/not-found';
-
-import local from 'feathers-authentication-local';
-import jwt from 'feathers-authentication-jwt';
 import swagger from 'feathers-swagger';
 import configuration from 'feathers-configuration';
 
@@ -36,9 +32,6 @@ app
   })
   .configure(socketio())
   .configure(hooks())
-  .configure(authentication(app.get('authentication')))
-  .configure(local())
-  .configure(jwt())
   .configure(services())
   .configure(swagger(app.get('swagger')))
   .configure(api());

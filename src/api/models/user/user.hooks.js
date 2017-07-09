@@ -13,7 +13,7 @@ const hasPermissionBoolean = require('../../hooks/has-permission-boolean');
 const preventDisabledAdmin = require('../../hooks/prevent-disabled-admin');
 
 const restrict = [
-  authenticate('jwt'),
+  authenticate(['jwt']),
   isEnabled(),
   commonHooks.unless(
     hasPermissionBoolean('manageUsers'),
@@ -74,6 +74,7 @@ module.exports = {
       commonHooks.when(
         hook => hook.params.provider,
         commonHooks.discard(
+          '__v',
           'password',
           '_computed',
           'verifyExpires',
@@ -85,10 +86,24 @@ module.exports = {
     find: [
       commonHooks.populate({ schema }),
       commonHooks.serialize(serializeSchema),
+      commonHooks.discard(
+          'verifyToken',
+          'resetToken',
+          '_computed',
+          'verifyShortToken',
+          'resetShortToken',
+        ),
     ],
     get: [
       commonHooks.populate({ schema }),
       commonHooks.serialize(serializeSchema),
+      commonHooks.discard(
+          'verifyToken',
+          'resetToken',
+          '_computed',
+          'verifyShortToken',
+          'resetShortToken',
+        ),
     ],
     create: [sendVerificationEmail(), verifyHooks.removeVerification()],
     update: [],

@@ -12,7 +12,7 @@ const Router = () => (
         <Module key="/" module={() => System.import('../Home')}>
           {(module) => { return module ? <module.default {...matchProps} /> : null; }}
         </Module>
-                )}
+      )}
     />
     <Route
       exact
@@ -26,7 +26,7 @@ const Router = () => (
         (<Module key="/about" module={() => System.import('../About')}>
           {(module) => { return module ? <module.default {...matchProps} /> : null; }}
         </Module>)
-                }
+      }
     />
     <Route
       exact
@@ -35,8 +35,19 @@ const Router = () => (
         (<Module key="/images/all" module={() => System.import('../ImageView')}>
           {(module) => { return module ? <module.default {...matchProps} /> : null; }}
         </Module>)
-                }
+      }
     />
+
+    <Route
+      exact
+      path="/login"
+      render={matchProps =>
+        (<Module key="/login" module={() => System.import('../Login')}>
+          {(module) => { return module ? <module.default {...matchProps} /> : null; }}
+        </Module>)
+      }
+    />
+
     <Route
       exact
       path="/signup"
@@ -44,7 +55,7 @@ const Router = () => (
         (<Module key="/signup" module={() => System.import('../Signup')}>
           {(module) => { return module ? <module.default {...matchProps} /> : null; }}
         </Module>)
-                }
+      }
     />
 
     <Route
@@ -54,7 +65,7 @@ const Router = () => (
         (<Module key="/signup/success" module={() => System.import('../Signup/Success')}>
           {(module) => { return module ? <module.default {...matchProps} /> : null; }}
         </Module>)
-                }
+      }
     />
     <Route
       exact
@@ -66,10 +77,10 @@ const Router = () => (
         >
           {(module) => { return module ? <module.default {...matchProps} /> : null; }}
         </Module>)
-                }
+      }
     />
     <Route component={NoMatch} />
   </Switch>
-    );
+);
 
 export default Router;
