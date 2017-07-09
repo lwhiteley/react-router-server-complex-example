@@ -5,9 +5,9 @@ import isInteger from 'lodash/isInteger';
 import parseInt from 'lodash/parseInt';
 import isNil from 'lodash/isNil';
 
-const checkLabel = (text, label) =>
-  isInteger(parseInt(label)) || isNil(label)
-    ? text : `${text} ${label}`;
+const checkLabel = (text, label) => {
+  return isInteger(parseInt(label)) || isNil(label) ? text : `${text} ${label}`;
+};
 
 export default observer(({
   onlyIcon = false,

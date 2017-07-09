@@ -9,10 +9,10 @@
     "build": "babel-node -- node_modules/.bin/webpack",
     "prestart": "npm run build",
     "start": "node index.js",
-    "lint": "eslint src",
+    "lint": "eslint --ext .js --ext .jsx src",
     "precommit-msg": "echo 'precommit: running checks...' && exit 0",
-    "beautify": "eslint --fix src",
-    "test": "exit 0"
+    "beautify": "eslint --ext .js --ext .jsx --fix src",
+    "test": "run-s lint"
   },
   "pre-commit": [
     "precommit-msg",
@@ -106,6 +106,7 @@
     "less": "^2.7.2",
     "less-loader": "^4.0.4",
     "mobx-react-devtools": "^4.2.13",
+    "npm-run-all": "^4.0.2",
     "pre-commit": "^1.2.2",
     "stats-webpack-plugin": "^0.6.0",
     "style-loader": "^0.16.1",

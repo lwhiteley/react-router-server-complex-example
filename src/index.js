@@ -79,7 +79,7 @@ const init = () => {
   const server = app.listen(port, () => {
     app.info('--------------------------');
     app.info(`site listening on http://localhost:${port}`);
-    app.info('--------------------------');
+    app.info('--------------------------\n');
   });
   api.setup(server);
   return app;

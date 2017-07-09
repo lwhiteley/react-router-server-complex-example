@@ -6,13 +6,17 @@ module.exports = function hasPermissionBoolean(permission) {
       return true;
     }
 
+    if (_.get(hook, 'params.user.role') === 'admin') {
+      return true;
+    }
+
     if (
-      !_.get(hook, 'params.user.role') === 'admin' ||
       !_.get(hook, 'params.user.permissions') ||
       !hook.params.user.permissions.includes(permission)
     ) {
       return false;
     }
+
     return true;
   };
 };

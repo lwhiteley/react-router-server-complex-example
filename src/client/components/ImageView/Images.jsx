@@ -1,10 +1,11 @@
 import * as React from 'react';
 import Helmet from 'react-helmet';
 
-const Images = (props) => (
+const Images = () => (
   <div>
-    <Helmet title={"Images"} />
+    <Helmet title={'Images'} />
     <img
+      alt="sky"
       src={require('./images/sky.jpg')}
       width="100%"
     />

@@ -11,6 +11,7 @@ module.exports = function isEnabled(options = {}) { // eslint-disable-line no-un
     }
 
     if (_.get(hook, 'params.user.role') === 'admin') {
+      // hook.app.debug('user is in admin role, bypassing isEnabled');
       return Promise.resolve(hook);
     }
 

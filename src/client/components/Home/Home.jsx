@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import  PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { observer, inject } from 'mobx-react';
 import Helmet from 'react-helmet';
 import './home.css';
 
-@inject("home") @observer
+@inject('home') @observer
 class Home extends Component {
 
   render() {
     const { home } = this.props;
     return (
       <div className="home">
-        <Helmet title={"Home"} />
+        <Helmet title={'Home'} />
         <div className="home-message">
           {home.message}
         </div>
@@ -22,28 +22,39 @@ class Home extends Component {
           </div>
 
           <div className="clearfix">
-            <div className="pointer increment-btn" onClick={() => {
-                const { home } = this.props;
+            <div
+              role="button"
+              tabIndex="0"
+              className="pointer increment-btn"
+              onClick={() => {
                 home.incrementCounter();
-              }}>
+              }}
+            >
               Increment
             </div>
-            <div className="pointer increment-btn" onClick={() => {
-                const { home } = this.props;
+            <div
+              role="button"
+              tabIndex="-1"
+              className="pointer increment-btn"
+              onClick={() => {
                 home.decrementCounter();
-              }}>
+              }}
+            >
               Decrement
             </div>
-            <div className="pointer increment-btn" onClick={() => {
-                const { home } = this.props;
+            <div
+              role="button"
+              tabIndex="-2"
+              className="pointer increment-btn"
+              onClick={() => {
                 home.resetCounter();
-              }}>
+              }}
+            >
               Reset
             </div>
           </div>
         </div>
 
-        
 
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum imperdiet elit eget diam placerat, ac
@@ -95,3 +106,11 @@ class Home extends Component {
 }
 
 export default Home;
+
+Home.propTypes = {
+  home: PropTypes.shape({}),
+};
+
+Home.defaultProps = {
+  home: {},
+};
