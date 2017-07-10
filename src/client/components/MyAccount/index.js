@@ -7,16 +7,18 @@ import formSetup from './formSetup';
 import Form from '../BaseForm';
 import FormLogin from './FormMyAccount';
 // import client from '../../helpers/rest-client';
+import formValueSetter from '../../helpers/form-value-setter';
 import storage from '../../helpers/simple-storage';
 import constants from '../../constants';
 
 const name = 'MyAccountForm';
 const logger = require('./client-logger')(name);
 
+const user = storage.getItem(constants.storageKeys.currentUser);
+
 class MyAccountFormHandler extends Form {
   setup() {
-    const values = storage.getItem(constants.storageKeys.currentUser);
-    return { values };
+    return { values: user };
   }
   onSuccess(form) {
     const values = form.values();
@@ -27,10 +29,8 @@ class MyAccountFormHandler extends Form {
   }
 }
 
-
-// const populatedSetup = formValueSetter(formSetup, user);
-
-const MyAccountForm = new MyAccountFormHandler({ ...formSetup }, { name });
+const populatedSetup = formValueSetter(formSetup, user);
+const MyAccountForm = new MyAccountFormHandler({ ...populatedSetup }, { name });
 
 @observer
 export default class MyAccount extends Component {
