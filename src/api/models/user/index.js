@@ -43,6 +43,7 @@ const schema = new Schema({
     trim,
     validate: validatePattern('isTitle'),
   },
+  permissions: [],
 });
 
 schema.plugin(sequenceGenerator, {
