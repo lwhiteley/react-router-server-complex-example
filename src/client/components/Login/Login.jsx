@@ -7,6 +7,7 @@ import formSetup from './formSetup';
 import Form from '../BaseForm';
 import FormLogin from './FormLogin';
 import client from '../../helpers/rest-client';
+import storage from '../../helpers/simple-storage';
 // import authManagement from '../../helpers/auth-mgmt-client';
 
 const name = 'LoginForm';
@@ -38,6 +39,7 @@ class LoginFormHandler extends Form {
           client.logout();
           throw error;
         }
+        storage.setItem('currentUser', user);
         return form.router.push({
           pathname: '/',
           state: {

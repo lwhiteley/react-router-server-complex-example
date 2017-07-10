@@ -60,6 +60,16 @@ const Router = () => (
 
     <Route
       exact
+      path="/my-account"
+      render={matchProps =>
+              (<Module key="/my-account" module={() => System.import('../MyAccount')}>
+                {(module) => { return module ? <module.default {...matchProps} /> : null; }}
+              </Module>)
+          }
+    />
+
+    <Route
+      exact
       path="/signup/success"
       render={matchProps =>
         (<Module key="/signup/success" module={() => System.import('../Signup/Success')}>

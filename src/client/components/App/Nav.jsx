@@ -11,6 +11,7 @@ const Nav = () => {
         <li><Link to="/images/all">Images</Link></li>
         <li><Link to="/signup">Signup</Link></li>
         <li><Link to="/login">Login</Link></li>
+        <li><Link to="/my-account">My Account</Link></li>
         <li><Link to="/404">404</Link></li>
       </ul>
     </nav>
