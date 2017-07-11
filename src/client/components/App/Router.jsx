@@ -50,6 +50,16 @@ const Router = () => (
 
     <Route
       exact
+      path="/logout"
+      render={matchProps =>
+              (<Module key="/logout" module={() => System.import('../App/Logout')}>
+                {(module) => { return module ? <module.default {...matchProps} /> : null; }}
+              </Module>)
+          }
+    />
+
+    <Route
+      exact
       path="/signup"
       render={matchProps =>
         (<Module key="/signup" module={() => System.import('../Signup')}>
