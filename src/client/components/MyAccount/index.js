@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react';
 import Helmet from 'react-helmet';
+import pick from 'lodash/pick';
 
 import formSetup from './formSetup';
 import Form from '../BaseForm';
@@ -15,10 +16,14 @@ const name = 'MyAccountForm';
 const logger = require('./client-logger')(name);
 
 const user = storage.getItem(constants.storageKeys.currentUser);
+const userFormValues = pick(user, [
+  'firstName',
+  'lastName',
+]);
 
 class MyAccountFormHandler extends Form {
   setup() {
-    return { values: user };
+    return { values: userFormValues };
   }
   onSuccess(form) {
     const values = form.values();
@@ -29,7 +34,7 @@ class MyAccountFormHandler extends Form {
   }
 }
 
-const populatedSetup = formValueSetter(formSetup, user);
+const populatedSetup = formValueSetter(formSetup, userFormValues);
 const MyAccountForm = new MyAccountFormHandler({ ...populatedSetup }, { name });
 
 @observer
