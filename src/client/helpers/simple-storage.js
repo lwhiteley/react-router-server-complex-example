@@ -1,7 +1,7 @@
-const storageKeyPrefix = 'simplestore';
+import constants from '../constants';
 
 const getKey = (key) => {
-  return `${storageKeyPrefix}:${key}`;
+  return `${constants.storePrefix}:${key}`;
 };
 
 const store = function store(key, value) {
