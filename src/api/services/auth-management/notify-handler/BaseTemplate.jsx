@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// eslint-disable-file
+
 class BaseTemplate extends Component {
   constructor(props) {
     super(props);
