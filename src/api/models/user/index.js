@@ -16,6 +16,11 @@ const schema = new Schema({
   firstName: { type: String, required },
   lastName: { type: String, required },
   address: { type: Object },
+  gender: {
+    type: String,
+    enum: ['male', 'female'],
+    required,
+  },
 
   // Middleware Controlled props
   cellphone: { type: String },
@@ -43,6 +48,7 @@ const schema = new Schema({
     trim,
     validate: validatePattern('isTitle'),
   },
+  // permissions: [],
 });
 
 schema.plugin(sequenceGenerator, {

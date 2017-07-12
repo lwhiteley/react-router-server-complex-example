@@ -4,7 +4,17 @@
 
 require('dotenv').config();
 
+global.document = {};
 global.window = {};
+
+if (!global.localStorage) {
+    global.localStorage = {
+        getItem: () => {},
+        setItem: () => {},
+        removeItem: () => {},
+    };
+    global.window.localStorage = global.localStorage;
+}
 let server = null;
 
 if (process.env.NODE_ENV !== 'production') {

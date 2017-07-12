@@ -49,6 +49,11 @@ export default {
       placeholder: 'Doe',
       rules: 'required|string|between:1,50',
     },
+    gender: {
+      label: 'Gender',
+      value: 'male',
+      extra: ['male', 'female'],
+    },
     terms: {
       value: true,
       type: 'checkbox',
