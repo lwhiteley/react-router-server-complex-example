@@ -1,15 +1,21 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
-const BaseTemplate = (props) => {
-  const { hashLink } = props.data;
-  return (
-    <div>
-      <p>[Default template]</p>
-      {hashLink}
-    </div>
-  );
-};
+// eslint-disable-file
+class BaseTemplate extends Component {
+  constructor(props) {
+    super(props);
+    this.defaultText = 'Default template';
+  }
+  render() {
+    const { hashLink } = this.props.data;
+    return (
+      <div>
+        <p>[{this.defaultText}]</p>
+        {hashLink}
+      </div>
+    );
+  }
+}
 
 export default BaseTemplate;
 

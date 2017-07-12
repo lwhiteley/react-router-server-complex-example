@@ -4,6 +4,7 @@ import { observer } from 'mobx-react';
 import Input from '../BaseForm/components/inputs/SimpleInput';
 import Checkbox from '../BaseForm/components/inputs/SimpleCheckbox';
 import FormControls from '../BaseForm/components/controls/FormControls';
+import Select from '../BaseForm/components/inputs/SimpleSelect';
 
 export default observer(({ form }) => (
   <form>
@@ -11,6 +12,7 @@ export default observer(({ form }) => (
 
     <Input field={form.$('firstName')} />
     <Input field={form.$('lastName')} />
+    <Select field={form.$('gender')} />
     <Input field={form.$('username')} />
     <Input field={form.$('email')} />
     <Input field={form.$('emailConfirm')} />

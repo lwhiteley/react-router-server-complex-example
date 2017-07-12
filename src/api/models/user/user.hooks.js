@@ -86,24 +86,10 @@ module.exports = {
     find: [
       commonHooks.populate({ schema }),
       commonHooks.serialize(serializeSchema),
-      commonHooks.discard(
-          'verifyToken',
-          'resetToken',
-          '_computed',
-          'verifyShortToken',
-          'resetShortToken',
-        ),
     ],
     get: [
       commonHooks.populate({ schema }),
       commonHooks.serialize(serializeSchema),
-      commonHooks.discard(
-          'verifyToken',
-          'resetToken',
-          '_computed',
-          'verifyShortToken',
-          'resetShortToken',
-        ),
     ],
     create: [sendVerificationEmail(), verifyHooks.removeVerification()],
     update: [],

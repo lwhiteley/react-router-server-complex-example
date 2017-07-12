@@ -1,8 +1,3 @@
-import constants from '../constants';
-
-const getKey = (key) => {
-  return `${constants.storePrefix}:${key}`;
-};
 
 const store = function store(key, value) {
   let lsSupport = false;
@@ -91,16 +86,31 @@ const store = function store(key, value) {
   return key;
 };
 
-const storage = {};
 
-storage.getItem = (key) => {
-  return store(getKey(key));
-};
-storage.setItem = (key, val) => {
-  return store(getKey(key), val);
-};
-storage.removeItem = (key) => {
-  return store(getKey(key), null);
-};
+class Storage {
 
-export default storage;
+  constructor(prefix = 'simplestore') {
+    this._prefix = prefix;
+  }
+
+  _getKey(key) {
+    return `${this._prefix}:${key}`;
+  }
+
+  getItem(key) {
+    store(this._getKey(key));
+    return this;
+  }
+
+  setItem(key, value) {
+    store(this._getKey(key), value);
+    return this;
+  }
+
+  removeItem(key) {
+    store(this._getKey(key), null);
+    return this;
+  }
+}
+
+export default new Storage();

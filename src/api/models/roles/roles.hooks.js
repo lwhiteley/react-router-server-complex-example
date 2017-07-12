@@ -4,7 +4,7 @@ const isEnabled = require('../../hooks/is-enabled');
 
 module.exports = {
   before: {
-    all: [authenticate('jwt'), isEnabled(), hasPermission('manageRoles')],
+    all: [authenticate(['jwt']), isEnabled(), hasPermission('manageRoles')],
     find: [],
     get: [],
     create: [],

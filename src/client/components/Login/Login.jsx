@@ -40,6 +40,7 @@ class LoginFormHandler extends Form {
           throw error;
         }
         storage.setItem(constants.storageKeys.currentUser, user);
+
         return form.router.push({
           pathname: '/',
           state: {
