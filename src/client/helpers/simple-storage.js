@@ -98,8 +98,7 @@ class Storage {
   }
 
   getItem(key) {
-    store(this._getKey(key));
-    return this;
+    return store(this._getKey(key));
   }
 
   setItem(key, value) {
