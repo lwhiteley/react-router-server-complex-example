@@ -108,9 +108,5 @@ class Home extends Component {
 export default Home;
 
 Home.propTypes = {
-  home: PropTypes.shape({}),
-};
-
-Home.defaultProps = {
-  home: {},
+  home: PropTypes.shape({}).isRequired,
 };
