@@ -2,6 +2,7 @@ import React from 'react';
 import { Module } from 'react-router-server';
 import { Switch, Route, Redirect } from 'react-router';
 import NoMatch from '../NoMatch';
+import PrivateRoute from './PrivateRoute';
 
 const Router = () => (
   <Switch>
@@ -68,7 +69,7 @@ const Router = () => (
       }
     />
 
-    <Route
+    <PrivateRoute
       exact
       path="/my-account"
       render={matchProps =>

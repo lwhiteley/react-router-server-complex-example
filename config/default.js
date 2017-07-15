@@ -20,25 +20,25 @@ const config = {
     secret: process.env.APP_SECRET || 'supersecret',
     strategies: [
       'jwt',
-      'local'
+      'local',
     ],
     path: '/authentication',
     service: 'users',
     jwt: {
       header: {
-        type: 'access'
+        type: 'access',
       },
       audience: 'https://yourdomain.com',
       subject: 'anonymous',
       issuer: 'feathers',
       algorithm: 'HS256',
-      expiresIn: '1d'
+      expiresIn: '1d',
     },
     local: {
       entity: 'user',
       service: 'users',
       usernameField: 'email',
-      passwordField: 'password'
+      passwordField: 'password',
     },
   },
   adminEmail: process.env.ADMIN_EMAIL,

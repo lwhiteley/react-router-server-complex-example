@@ -75,6 +75,7 @@
     "react-tooltip": "^3.3.0",
     "react-widgets": "^3.4.8",
     "request-ip": "^2.0.1",
+    "sleep-promise": "^2.0.0",
     "socket.io-client": "^2.0.2",
     "tachyons": "^4.7.4",
     "to-slug-case": "^1.0.0",
