@@ -1,28 +1,17 @@
+
+import restrictUser from '../../utils/restrict-user';
+
 const _ = require('lodash');
-const { authenticate } = require('feathers-authentication').hooks;
 const commonHooks = require('feathers-hooks-common');
-const { restrictToOwner } = require('feathers-authentication-hooks');
 const verifyHooks = require('feathers-authentication-management').hooks;
 const { hashPassword } = require('feathers-authentication-local').hooks;
 
-const isEnabled = require('../../hooks/is-enabled');
 const setDefaultRole = require('../../hooks/set-default-role');
 const setFirstUserToRole = require('../../hooks/set-first-user-to-role');
 const sendVerificationEmail = require('../../hooks/send-verification-email');
-const hasPermissionBoolean = require('../../hooks/has-permission-boolean');
 const preventDisabledAdmin = require('../../hooks/prevent-disabled-admin');
 
-const restrict = [
-  authenticate(['jwt']),
-  isEnabled(),
-  commonHooks.unless(
-    hasPermissionBoolean('manageUsers'),
-    restrictToOwner({
-      idField: '_id',
-      ownerField: '_id',
-    })
-  ),
-];
+const restrict = restrictUser();
 
 const schema = {
   include: [
