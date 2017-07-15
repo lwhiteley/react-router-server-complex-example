@@ -77,7 +77,8 @@ const config = server => ({
       'process.env': {
         'NODE_ENV': JSON.stringify(process.env.NODE_ENV),
         'BASE_URL': JSON.stringify(process.env.BASE_URL),
-        'ADMIN_EMAIL': JSON.stringify(process.env.ADMIN_EMAIL),
+          'ADMIN_EMAIL': JSON.stringify(process.env.ADMIN_EMAIL),
+          'RUNTIME_ENV': JSON.stringify(server ? 'server': 'client'),
       },
     }),
     new StatsPlugin('stats.json', {

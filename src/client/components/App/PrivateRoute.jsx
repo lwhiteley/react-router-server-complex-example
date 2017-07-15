@@ -8,11 +8,13 @@ import {
 import storage from '../../helpers/simple-storage';
 
 const PrivateRoute = ({ component: Component, render, ...rest }) => {
-    //
   return (
     <Route
       {...rest}
       render={(props) => {
+        if (process.env.RUNTIME_ENV === 'server') {
+          return null;
+        }
         const rendered = render ? render() : <Component {...props} />;
         return (
               storage.getItem('feathers-jwt') ? (
