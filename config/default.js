@@ -40,6 +40,27 @@ const config = {
       usernameField: 'email',
       passwordField: 'password',
     },
+    facebook: {
+      clientID: 'your facebook client id',
+      clientSecret: 'your facebook client secret',
+      successRedirect: '/',
+      scope: [
+        'public_profile',
+        'email',
+      ],
+      profileFields: [
+        'id',
+        'displayName',
+        'first_name',
+        'last_name',
+        'email',
+        'gender',
+        'profileUrl',
+        'birthday',
+        'picture',
+        'permissions',
+      ],
+    },
   },
   adminEmail: process.env.ADMIN_EMAIL,
   mailer: {

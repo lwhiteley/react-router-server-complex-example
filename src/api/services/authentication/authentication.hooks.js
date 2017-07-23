@@ -1,16 +1,16 @@
 const { authenticate } = require('feathers-authentication').hooks;
 const verifyHooks = require('feathers-authentication-management').hooks;
 const pick = require('lodash/pick');
+const get = require('lodash/get');
+const errors = require('feathers-errors');
 
 module.exports = {
   before: {
-    all: [
-      // authenticate(['local', 'jwt']),
-    ],
+    all: [],
     find: [],
     get: [],
     create: [
-      authenticate(['local']),
+      authenticate(['jwt', 'local']),
       verifyHooks.isVerified(),
     ],
     update: [],
@@ -25,6 +25,13 @@ module.exports = {
     find: [],
     get: [],
     create: [
+      (hook) => {
+        if (!get(hook, 'params.user')) {
+          return Promise.reject(new errors.Forbidden('Credentials incorrect'));
+        }
+
+        return Promise.resolve(hook);
+      },
       (hook) => {
         hook.params.user = pick(hook.params.user, [
           '_id',
