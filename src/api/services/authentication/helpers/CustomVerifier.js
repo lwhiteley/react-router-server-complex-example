@@ -1,7 +1,15 @@
 import Debug from 'debug';
 import merge from 'lodash/merge';
+import get from 'lodash/get';
 
 const debug = Debug('feathers-authentication-oauth2:verify');
+
+const emailFinderMap = {
+  default: () => null,
+  facebook: (profile) => {
+    return get(profile, '_json.email');
+  },
+};
 
 class CustomOAuth2Verifier {
   constructor(app, options = {}) {
@@ -78,10 +86,11 @@ class CustomOAuth2Verifier {
   verify(req, accessToken, refreshToken, profile, done) {
     debug('Checking credentials');
     const options = this.options;
+    const emailFinder = emailFinderMap[options.name] || emailFinderMap.default;
     const query = {
       $or: [
             { [options.idField]: profile.id }, // facebookId: profile.id
-            { email: profile._json.email },
+            { email: emailFinder(profile) },
       ],
       $limit: 1,
     };
