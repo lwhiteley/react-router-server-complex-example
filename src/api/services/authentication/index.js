@@ -1,9 +1,10 @@
 import authentication from 'feathers-authentication';
 import local from 'feathers-authentication-local';
 import jwt from 'feathers-authentication-jwt';
+import CustomVerifier from './helpers/CustomVerifier';
 
 const oauth2 = require('feathers-authentication-oauth2');
-const FacebookStrategy = require('passport-facebook');
+const FacebookStrategy = require('passport-facebook').Strategy;
 
 const hooks = require('./authentication.hooks');
 
@@ -13,6 +14,7 @@ module.exports = function setup() {
   const fbOAuth = oauth2(Object.assign({
     name: 'facebook',
     Strategy: FacebookStrategy,
+    Verifier: CustomVerifier,
   }, config.facebook));
 
   // Initialize our service with any options it requires

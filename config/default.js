@@ -41,8 +41,9 @@ const config = {
       passwordField: 'password',
     },
     facebook: {
-      clientID: 'your facebook client id',
-      clientSecret: 'your facebook client secret',
+      clientID: '769703956426396',
+      clientSecret: '4d3c1a1f240505e62e1402954d02950c',
+      callbackURL: '/api/auth/facebook/callback',
       successRedirect: '/',
       scope: [
         'public_profile',
@@ -60,6 +61,12 @@ const config = {
         'picture',
         'permissions',
       ],
+    },
+    cookie: {
+      enabled: true,
+      name: 'feathers-jwt',
+      httpOnly: false,
+      secure: false,
     },
   },
   adminEmail: process.env.ADMIN_EMAIL,

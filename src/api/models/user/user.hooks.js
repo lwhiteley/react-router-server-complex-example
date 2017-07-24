@@ -31,6 +31,24 @@ const serializeSchema = {
   exclude: ['access', '_include'],
 };
 
+function customizeFBProfile() {
+  return function setup(hook) {
+    if (hook.data.facebook) {
+      hook.app.debug('Customizing facebook Profile');
+      hook.params.provider = 'facebook';
+      const profile = _.get(hook, 'data.facebook.profile._json', {});
+      hook.data.email = profile.email;
+      hook.data.username = profile.email;
+      // hook.data.password = profile.email;
+      hook.data.firstName = profile.first_name;
+      hook.data.lastName = profile.last_name;
+      hook.data.gender = profile.gender;
+    }
+
+    return Promise.resolve(hook);
+  };
+}
+
 module.exports = {
   before: {
     all: [],
@@ -38,6 +56,7 @@ module.exports = {
     get: [...restrict],
     create: [
       commonHooks.discard('_id', 'accountNumber'),
+      customizeFBProfile(),
       hashPassword(),
       verifyHooks.addVerification(),
       setDefaultRole(),
@@ -47,6 +66,7 @@ module.exports = {
     update: [
       ...restrict,
       commonHooks.discard('_id', 'accountNumber'),
+      customizeFBProfile(),
       hashPassword(),
       preventDisabledAdmin(),
     ],

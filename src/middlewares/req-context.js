@@ -5,7 +5,7 @@ export default () =>
     const app = this;
     app.use((req, res, next) => {
       req.id = cuid();
-      req.app = app;
+      // req.app = app;
 
       /**
        * instead of polluting the req object
