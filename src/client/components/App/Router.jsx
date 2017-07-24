@@ -72,7 +72,6 @@ const Router = () => (
     <PrivateRoute
       exact
       path="/my-account"
-      roles={['basic']}
       render={matchProps =>
               (<Module key="/my-account" module={() => System.import('../MyAccount')}>
                 {(module) => { return module ? <module.default {...matchProps} /> : null; }}
