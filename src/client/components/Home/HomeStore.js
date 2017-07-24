@@ -1,4 +1,4 @@
-// import Rest from '../../helpers/rest';
+// import store from '../../helpers/simple-storage';
 import { observable, action, computed } from 'mobx';
 
 class HomeStore {

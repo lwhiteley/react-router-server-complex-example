@@ -5,6 +5,7 @@ import includes from 'lodash/includes';
 const store = function store(key, value, defaultVal, clear) {
   let lsSupport = false;
   let data;
+  const prefix = this._prefix;
   const noop = () => {};
 
   const getCookies = () => {
@@ -66,9 +67,9 @@ const store = function store(key, value, defaultVal, clear) {
 
   function clearItems() {
     const usedStore = getStore();
-    forEach(usedStore, (item, storeKey) => {
-      if (includes(storeKey, this._prefix)) {
-        removeItem(storeKey);
+    forEach(Object.keys(usedStore), (storeKey) => {
+      if (includes(storeKey, prefix)) {
+        removeItem(storeKey, null);
       }
     });
     return null;
@@ -126,7 +127,7 @@ class Storage {
 
   constructor(prefix = 'simplestore') {
     this._prefix = prefix;
-    store.bind(this);
+    this.store = store.bind(this);
   }
 
   _getKey(key) {
@@ -134,21 +135,21 @@ class Storage {
   }
 
   getItem(key, defaultVal) {
-    return store(this._getKey(key), undefined, defaultVal);
+    return this.store(this._getKey(key), undefined, defaultVal);
   }
 
   setItem(key, value) {
-    store(this._getKey(key), value);
+    this.store(this._getKey(key), value);
     return this;
   }
 
   removeItem(key) {
-    store(this._getKey(key), null);
+    this.store(this._getKey(key), null);
     return this;
   }
 
   clear() {
-    store(null, null, null, true);
+    this.store(null, null, null, true);
     return this;
   }
 }
