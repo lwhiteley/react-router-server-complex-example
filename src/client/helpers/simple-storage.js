@@ -1,9 +1,21 @@
+import unescape from 'lodash/unescape';
+import forEach from 'lodash/forEach';
+import includes from 'lodash/includes';
 
-const store = function store(key, value, defaultVal) {
+const store = function store(key, value, defaultVal, clear) {
   let lsSupport = false;
   let data;
   const noop = () => {};
 
+  const getCookies = () => {
+    const pairs = document.cookie.split(';');
+    const cookies = {};
+    pairs.forEach((keyValuePair) => {
+      const pair = keyValuePair.split('=');
+      cookies[pair[0]] = unescape(pair[1]);
+    });
+    return cookies;
+  };
 
     /**
      * Creates new cookie or removes cookie with negative expiration
@@ -37,9 +49,39 @@ const store = function store(key, value, defaultVal) {
     return null;
   }
 
+  function removeItem(storeKey, storeVal) {
+    // Null specified, remove store
+    if (storeVal === null) {
+      return lsSupport
+            ? localStorage.removeItem(storeKey)
+            : createCookie(storeKey, '', -1);
+    }
+    return null;
+  }
+
+  function getStore() {
+    const usedStore = lsSupport ? localStorage : getCookies();
+    return usedStore;
+  }
+
+  function clearItems() {
+    const usedStore = getStore();
+    forEach(usedStore, (item, storeKey) => {
+      if (includes(storeKey, this._prefix)) {
+        removeItem(storeKey);
+      }
+    });
+    return null;
+  }
+
     // Check for native support
   if (typeof localStorage !== 'undefined') {
     lsSupport = true;
+  }
+
+
+  if (clear) {
+    return clearItems();
   }
 
     // If value is detected, set new or modify store
@@ -56,7 +98,7 @@ const store = function store(key, value, defaultVal) {
     }
   }
 
-    // No value supplied, return value
+  // No value supplied, return value
   if (typeof value === 'undefined') {
         // Get value
     if (lsSupport) { // Native support
@@ -65,7 +107,7 @@ const store = function store(key, value, defaultVal) {
       data = readCookie(key);
     }
 
-        // Try to parse JSON...
+    // Try to parse JSON...
     try {
       data = JSON.parse(data);
     } catch (e) {
@@ -75,14 +117,7 @@ const store = function store(key, value, defaultVal) {
     return data || defaultVal;
   }
 
-    // Null specified, remove store
-  if (value === null) {
-    if (lsSupport) { // Native support
-      localStorage.removeItem(key);
-    } else { // Use cookie
-      createCookie(key, '', -1);
-    }
-  }
+  removeItem(key, value);
   return key;
 };
 
@@ -91,6 +126,7 @@ class Storage {
 
   constructor(prefix = 'simplestore') {
     this._prefix = prefix;
+    store.bind(this);
   }
 
   _getKey(key) {
@@ -108,6 +144,11 @@ class Storage {
 
   removeItem(key) {
     store(this._getKey(key), null);
+    return this;
+  }
+
+  clear() {
+    store(null, null, null, true);
     return this;
   }
 }
