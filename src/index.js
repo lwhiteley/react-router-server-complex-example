@@ -71,7 +71,7 @@ app.get('/*', (req, res) => {
           });
         }
       })
-      .catch(err => req.app.error(err));
+      .catch(err => app.error(err));
   }
 });
 

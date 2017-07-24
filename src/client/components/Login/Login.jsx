@@ -16,6 +16,7 @@ const logger = require('./client-logger')(name);
 class LoginFormHandler extends Form {
   onSuccess(form) {
     const values = form.values();
+    const { from } = form.router.location.state || { from: { pathname: '/' } };
     logger.info(form.values(), 'Form Values', form.name);
     client
       .authenticate({
@@ -40,13 +41,10 @@ class LoginFormHandler extends Form {
           throw error;
         }
         storage.setItem(constants.storageKeys.currentUser, user);
-
-        return form.router.push({
-          pathname: '/',
-          state: {
-            user,
-          },
-        });
+        from.state = {
+          user,
+        };
+        return form.router.replace(from);
       })
       .catch((err) => {
         logger.error({ err }, 'Error authenticating!');

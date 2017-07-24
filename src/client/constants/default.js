@@ -4,5 +4,6 @@ module.exports = {
   storePrefix: 'simplestore',
   storageKeys: {
     currentUser: 'current_user',
+    jwt: 'feathers-jwt',
   },
 };

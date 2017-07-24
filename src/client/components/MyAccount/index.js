@@ -54,5 +54,5 @@ export default class MyAccount extends Component {
 }
 
 MyAccount.propTypes = {
-  history: PropTypes.shape({}).isRequired,
+  history: PropTypes.shape({}),
 };

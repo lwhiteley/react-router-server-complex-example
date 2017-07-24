@@ -20,25 +20,53 @@ const config = {
     secret: process.env.APP_SECRET || 'supersecret',
     strategies: [
       'jwt',
-      'local'
+      'local',
     ],
     path: '/authentication',
     service: 'users',
     jwt: {
       header: {
-        type: 'access'
+        type: 'access',
       },
       audience: 'https://yourdomain.com',
       subject: 'anonymous',
       issuer: 'feathers',
       algorithm: 'HS256',
-      expiresIn: '1d'
+      expiresIn: '1d',
     },
     local: {
       entity: 'user',
       service: 'users',
       usernameField: 'email',
-      passwordField: 'password'
+      passwordField: 'password',
+    },
+    facebook: {
+      clientID: '769703956426396',
+      clientSecret: '4d3c1a1f240505e62e1402954d02950c',
+      callbackURL: '/api/auth/facebook/callback',
+      successRedirect: '/',
+      scope: [
+        'public_profile',
+        'email',
+      ],
+      profileFields: [
+        'id',
+        'displayName',
+        'first_name',
+        'last_name',
+        'email',
+        'gender',
+        'profileUrl',
+        'birthday',
+        'picture',
+        'permissions',
+      ],
+    },
+    cookie: {
+      enabled: true,
+      name: 'feathers-jwt',
+      httpOnly: false,
+      secure: false,
     },
   },
   adminEmail: process.env.ADMIN_EMAIL,

@@ -5,7 +5,7 @@ import rest from 'feathers-rest';
 import hooks from 'feathers-hooks';
 import socketio from 'feathers-socketio';
 import logger from 'feathers-logger';
-// import errors from 'feathers-errors';
+import sync from 'feathers-sync';
 import handler from 'feathers-errors/handler';
 import notFound from 'feathers-errors/not-found';
 import swagger from 'feathers-swagger';
@@ -20,18 +20,22 @@ mongoose.Promise = global.Promise;
 const app = feathers()
   .configure(configuration(__dirname))
   .configure(logger(winston));
+const mongoConnectionString = app.get('dbConnectionString');
 
-mongoose.connect(app.get('dbConnectionString'));
+mongoose.connect(mongoConnectionString);
 
-// Enable Socket.io
 app
   .configure(rest())
   .use((req, res, next) => {
     req.feathers.context = req.context;
     next();
   })
+    .configure(hooks())
   .configure(socketio())
-  .configure(hooks())
+    .configure(sync({
+      db: mongoConnectionString,
+      collection: 'syncEvents',
+    }))
   .configure(services())
   .configure(swagger(app.get('swagger')))
   .configure(api());

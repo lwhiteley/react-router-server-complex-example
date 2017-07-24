@@ -7,7 +7,7 @@ export default class Logout extends Component {
   constructor(props) {
     super(props);
     client.logout();
-    return this.props.history.push({
+    return this.props.history.replace({
       pathname: '/',
     });
   }
@@ -20,6 +20,6 @@ export default class Logout extends Component {
 
 Logout.propTypes = {
   history: PropTypes.shape({
-    push: PropTypes.func,
+    replace: PropTypes.func,
   }).isRequired,
 };

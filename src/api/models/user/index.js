@@ -22,11 +22,16 @@ const schema = new Schema({
     required,
   },
 
+    // OAuth fields
+  facebookId: { type: String },
+  facebook: { type: Schema.Types.Mixed },
+  oauth: { type: Schema.Types.Mixed },
+
   // Middleware Controlled props
   cellphone: { type: String },
   username: { type: String, unique, required },
   email: { type: String, unique, required },
-  password: { type: String, required },
+  password: { type: String },
 
   isVerified: { type: Boolean },
   verifyToken: { type: String },

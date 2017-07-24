@@ -1,5 +1,5 @@
 
-const store = function store(key, value) {
+const store = function store(key, value, defaultVal) {
   let lsSupport = false;
   let data;
   const noop = () => {};
@@ -72,7 +72,7 @@ const store = function store(key, value) {
       noop(data);
     }
 
-    return data;
+    return data || defaultVal;
   }
 
     // Null specified, remove store
@@ -97,8 +97,8 @@ class Storage {
     return `${this._prefix}:${key}`;
   }
 
-  getItem(key) {
-    return store(this._getKey(key));
+  getItem(key, defaultVal) {
+    return store(this._getKey(key), undefined, defaultVal);
   }
 
   setItem(key, value) {
