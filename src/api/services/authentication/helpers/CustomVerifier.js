@@ -31,20 +31,20 @@ class CustomOAuth2Verifier {
   }
 
   _normalizeResult(results) {
-        // Paginated services return the array of results in the data attribute.
+    // Paginated services return the array of results in the data attribute.
     const entities = results.data ? results.data : results;
     let entity = entities[0];
 
-        // Handle entity not found.
+    // Handle entity not found.
     if (!entity) {
       return Promise.resolve(null);
     }
 
-        // Handle updating mongoose models
+    // Handle updating mongoose models
     if (typeof entity.toObject === 'function') {
       entity = entity.toObject();
     } else if (typeof entity.toJSON === 'function') {
-            // Handle updating Sequelize models
+      // Handle updating Sequelize models
       entity = entity.toJSON();
     }
 
@@ -63,7 +63,7 @@ class CustomOAuth2Verifier {
       [name]: data,
     };
 
-        // Merge existing user data with new profile data
+    // Merge existing user data with new profile data
     const updated = merge({}, entity, newData);
     debug(`Updating ${options.entity} with`, updated);
     return this.service.update(id, updated, { oauth: { provider: name } });
@@ -97,19 +97,19 @@ class CustomOAuth2Verifier {
     const data = { profile, accessToken, refreshToken };
     let existing;
 
-        // Check request object for an existing entity
+    // Check request object for an existing entity
     if (req && req[options.entity]) {
       existing = req[options.entity];
     }
 
-        // Check the request that came from a hook for an existing entity
+    // Check the request that came from a hook for an existing entity
     if (!existing && req && req.params && req.params[options.entity]) {
       existing = req.params[options.entity];
     }
 
-        // If there is already an entity on the request object (ie. they are
-        // already authenticated) attach the profile to the existing entity
-        // because they are likely "linking" social accounts/profiles.
+    // If there is already an entity on the request object (ie. they are
+    // already authenticated) attach the profile to the existing entity
+    // because they are likely "linking" social accounts/profiles.
     if (existing) {
       return this._updateEntity(existing, data)
                 .then(entity => done(null, entity))
@@ -118,7 +118,7 @@ class CustomOAuth2Verifier {
 
     debug('Query entity', query);
 
-        // Find or create the user since they could have signed up via facebook.
+    // Find or create the user since they could have signed up via facebook.
     return this.service
             .find({ query })
             .then(this._normalizeResult)
