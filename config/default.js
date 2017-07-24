@@ -41,8 +41,8 @@ const config = {
       passwordField: 'password',
     },
     facebook: {
-      clientID: '769703956426396',
-      clientSecret: '4d3c1a1f240505e62e1402954d02950c',
+      clientID: process.env.FB_CLIENT_ID,
+      clientSecret: process.env.FB_CLIENT_SECRET,
       callbackURL: '/api/auth/facebook/callback',
       successRedirect: '/',
       scope: [
